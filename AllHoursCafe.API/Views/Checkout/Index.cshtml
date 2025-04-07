@@ -1,0 +1,218 @@
+@model AllHoursCafe.API.Controllers.CheckoutViewModel
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<section class="checkout-section">
+    <div class="container">
+        <div class="checkout-header">
+            <h1>Checkout</h1>
+            <p>Complete your order by providing your details below</p>
+        </div>
+
+        <div class="checkout-content">
+            <div class="checkout-form-container">
+                <form asp-action="Index" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-section">
+                        <h2>Contact Information</h2>
+                        <div class="form-group">
+                            <label asp-for="Order.CustomerName" class="control-label">Full Name</label>
+                            <input asp-for="Order.CustomerName" class="form-control" placeholder="Enter your full name" />
+                            <span asp-validation-for="Order.CustomerName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label asp-for="Order.CustomerEmail" class="control-label">Email</label>
+                                <input asp-for="Order.CustomerEmail" class="form-control" placeholder="Enter your email address" />
+                                <span asp-validation-for="Order.CustomerEmail" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label asp-for="Order.CustomerPhone" class="control-label">Phone Number</label>
+                                <input asp-for="Order.CustomerPhone" class="form-control" placeholder="Enter your phone number" />
+                                <span asp-validation-for="Order.CustomerPhone" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2>Delivery Information</h2>
+
+                        <div class="form-group">
+                            <label class="control-label">Order Type</label>
+                            <div class="order-type-selector">
+                                <div class="order-type-option">
+                                    <input type="radio" asp-for="Order.OrderType" value="Delivery" id="delivery" checked />
+                                    <label for="delivery">
+                                        <i class="fas fa-motorcycle"></i>
+                                        <span>Delivery</span>
+                                    </label>
+                                </div>
+                                <div class="order-type-option">
+                                    <input type="radio" asp-for="Order.OrderType" value="Pickup" id="pickup" />
+                                    <label for="pickup">
+                                        <i class="fas fa-store"></i>
+                                        <span>Pickup</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="delivery-fields">
+                            <div class="form-group">
+                                <label asp-for="Order.DeliveryAddress" class="control-label">Address</label>
+                                <input asp-for="Order.DeliveryAddress" class="form-control" placeholder="Enter your street address" />
+                                <span asp-validation-for="Order.DeliveryAddress" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label asp-for="Order.City" class="control-label">City</label>
+                                    <input asp-for="Order.City" class="form-control" placeholder="Enter your city" />
+                                    <span asp-validation-for="Order.City" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label asp-for="Order.State" class="control-label">State</label>
+                                    <input asp-for="Order.State" class="form-control" placeholder="Enter your state" />
+                                    <span asp-validation-for="Order.State" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label asp-for="Order.PostalCode" class="control-label">Postal Code</label>
+                                    <input asp-for="Order.PostalCode" class="form-control" placeholder="Enter your postal code" />
+                                    <span asp-validation-for="Order.PostalCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Order.DeliveryTime" class="control-label">Preferred Time</label>
+                            <input asp-for="Order.DeliveryTime" class="form-control" type="datetime-local" />
+                            <span asp-validation-for="Order.DeliveryTime" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Order.SpecialInstructions" class="control-label">Special Instructions</label>
+                            <textarea asp-for="Order.SpecialInstructions" class="form-control" rows="3" placeholder="Any special instructions for delivery or food preparation"></textarea>
+                            <span asp-validation-for="Order.SpecialInstructions" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <a asp-controller="Menu" asp-action="Index" class="btn-secondary">Back to Menu</a>
+                        <input type="submit" class="btn-primary" id="proceedToPaymentBtn" value="Proceed to Payment" />
+                    </div>
+                </form>
+            </div>
+
+            <div class="order-summary">
+                <div class="order-summary-header">
+                    <h2>Order Summary</h2>
+                </div>
+
+                <div class="order-items">
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <div class="order-item">
+                            <div class="item-image">
+                                <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "/images/menu/placeholder.jpg" : item.ImageUrl)" alt="@item.Name">
+                            </div>
+                            <div class="item-details">
+                                <h3>@item.Name</h3>
+                                <div class="item-price-qty">
+                                    <span class="item-price">₹@item.Price.ToString("F2")</span>
+                                    <span class="item-qty">x @item.Quantity</span>
+                                </div>
+                                <div class="item-total">₹@((item.Price * item.Quantity).ToString("F2"))</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="order-totals">
+                    <div class="total-row">
+                        <span>Subtotal</span>
+                        <span>₹@Model.SubTotal.ToString("F2")</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax (5%)</span>
+                        <span>₹@Model.Tax.ToString("F2")</span>
+                    </div>
+                    <div class="total-row delivery-fee">
+                        <span>Delivery Fee</span>
+                        <span>₹@Model.DeliveryFee.ToString("F2")</span>
+                    </div>
+                    <div class="total-row grand-total">
+                        <span>Total</span>
+                        <span>₹@Model.Total.ToString("F2")</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function() {
+            // Handle order type selection
+            const deliveryRadio = document.getElementById('delivery');
+            const pickupRadio = document.getElementById('pickup');
+            const deliveryFields = document.getElementById('delivery-fields');
+            const deliveryFeeElement = document.querySelector('.delivery-fee');
+
+            function updateOrderType() {
+                if (deliveryRadio.checked) {
+                    deliveryFields.style.display = 'block';
+                    deliveryFeeElement.style.display = 'flex';
+                } else {
+                    deliveryFields.style.display = 'none';
+                    deliveryFeeElement.style.display = 'none';
+                }
+            }
+
+            deliveryRadio.addEventListener('change', updateOrderType);
+            pickupRadio.addEventListener('change', updateOrderType);
+
+            // Initialize
+            updateOrderType();
+
+            // Set minimum date and time for delivery
+            const now = new Date();
+            now.setHours(now.getHours() + 1); // Minimum 1 hour from now
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+
+            const minDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+            document.querySelector('input[type="datetime-local"]').setAttribute('min', minDateTime);
+
+            // Enable jQuery validation
+            $.validator.setDefaults({
+                ignore: [],
+                highlight: function(element) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element) {
+                    $(element).removeClass('is-invalid');
+                },
+                errorElement: 'div',
+                errorClass: 'invalid-feedback',
+                errorPlacement: function(error, element) {
+                    error.insertAfter(element);
+                }
+            });
+
+            // Form is now working correctly
+        });
+    </script>
+}

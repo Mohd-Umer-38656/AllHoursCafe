@@ -1,0 +1,68 @@
+@model AllHoursCafe.API.Models.Reservation
+
+@{
+    ViewData["Title"] = "Reservation Confirmation";
+}
+
+<section class="confirmation-section">
+    <div class="container">
+        <div class="confirmation-header">
+            <div class="confirmation-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1>Reservation Confirmed!</h1>
+            <p>Thank you for your reservation at All Hours Cafe.</p>
+        </div>
+        
+        <div class="confirmation-details">
+            <div class="confirmation-card">
+                <h2>Reservation Details</h2>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Name:</span>
+                    <span class="detail-value">@Model.Name</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Date:</span>
+                    <span class="detail-value">@Model.ReservationDate.ToString("dddd, MMMM d, yyyy")</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Time:</span>
+                    <span class="detail-value">@Model.ReservationTime.ToString("h:mm tt")</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Number of Guests:</span>
+                    <span class="detail-value">@Model.NumberOfGuests @(Model.NumberOfGuests == 1 ? "person" : "people")</span>
+                </div>
+                
+                @if (!string.IsNullOrEmpty(Model.SpecialRequests))
+                {
+                    <div class="detail-item">
+                        <span class="detail-label">Special Requests:</span>
+                        <span class="detail-value">@Model.SpecialRequests</span>
+                    </div>
+                }
+                
+                <div class="detail-item">
+                    <span class="detail-label">Confirmation Number:</span>
+                    <span class="detail-value">AHC-@Model.Id.ToString("D6")</span>
+                </div>
+            </div>
+            
+            <div class="confirmation-info">
+                <p>A confirmation email has been sent to <strong>@Model.Email</strong>.</p>
+                <p>If you need to modify or cancel your reservation, please contact us at:</p>
+                <p><strong>Phone:</strong> +91 123 456 7890</p>
+                <p><strong>Email:</strong> reservations@allhourscafe.com</p>
+            </div>
+            
+            <div class="confirmation-actions">
+                <a asp-controller="Home" asp-action="Index" class="btn-secondary">Return to Home</a>
+                <a asp-controller="Menu" asp-action="Index" class="btn-primary">View Our Menu</a>
+            </div>
+        </div>
+    </div>
+</section>

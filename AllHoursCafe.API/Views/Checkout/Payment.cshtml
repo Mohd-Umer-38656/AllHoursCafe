@@ -1,0 +1,232 @@
+@model AllHoursCafe.API.Controllers.PaymentViewModel
+
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<section class="payment-section">
+    <div class="container">
+        <div class="payment-header">
+            <h1>Payment</h1>
+            <p>Complete your payment to confirm your order</p>
+        </div>
+
+        <div class="payment-content">
+            <div class="payment-form-container">
+                <form asp-action="Payment" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-section">
+                        <h2>Payment Method</h2>
+                        <div class="payment-methods">
+                            @foreach (var method in Model.PaymentMethods)
+                            {
+                                <div class="payment-method-option">
+                                    <input type="radio" name="PaymentMethod" value="@method" id="@method.Replace(" ", "")" @(method == "Credit Card" ? "checked" : "") />
+                                    <label for="@method.Replace(" ", "")">
+                                        @switch (method)
+                                        {
+                                            case "Credit Card":
+                                                <i class="fas fa-credit-card"></i>
+                                                break;
+                                            case "Debit Card":
+                                                <i class="fas fa-credit-card"></i>
+                                                break;
+                                            case "UPI":
+                                                <i class="fas fa-mobile-alt"></i>
+                                                break;
+                                            case "Cash on Delivery":
+                                                <i class="fas fa-money-bill-wave"></i>
+                                                break;
+                                            default:
+                                                <i class="fas fa-credit-card"></i>
+                                                break;
+                                        }
+                                        <span>@method</span>
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div id="creditCardFields" class="payment-details">
+                        <div class="form-section">
+                            <h2>Card Details</h2>
+                            <div class="form-group">
+                                <label for="CardNumber" class="control-label">Card Number</label>
+                                <input type="text" id="CardNumber" name="CardNumber" class="form-control" placeholder="1234 5678 9012 3456" />
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="CardholderName" class="control-label">Cardholder Name</label>
+                                    <input type="text" id="CardholderName" name="CardholderName" class="form-control" placeholder="Name on card" />
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="ExpiryDate" class="control-label">Expiry Date</label>
+                                    <input type="text" id="ExpiryDate" name="ExpiryDate" class="form-control" placeholder="MM/YY" />
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="CVV" class="control-label">CVV</label>
+                                    <input type="text" id="CVV" name="CVV" class="form-control" placeholder="123" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="upiFields" class="payment-details" style="display: none;">
+                        <div class="form-section">
+                            <h2>UPI Details</h2>
+                            <div class="form-group">
+                                <label for="UPIId" class="control-label">UPI ID</label>
+                                <input type="text" id="UPIId" name="UPIId" class="form-control" placeholder="yourname@upi" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="cashOnDeliveryFields" class="payment-details" style="display: none;">
+                        <div class="form-section">
+                            <h2>Cash on Delivery</h2>
+                            <p class="cod-note">Please keep exact change ready for the delivery person.</p>
+                            <div class="cod-info">
+                                <i class="fas fa-info-circle"></i>
+                                <span>You will pay ₹@Model.Order.Total.ToString("F2") when your order is delivered.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2>Billing Address</h2>
+                        <div class="billing-address">
+                            <p><strong>@Model.Order.CustomerName</strong></p>
+                            <p>@Model.Order.DeliveryAddress</p>
+                            <p>@Model.Order.City, @Model.Order.State @Model.Order.PostalCode</p>
+                            <p>Phone: @Model.Order.CustomerPhone</p>
+                            <p>Email: @Model.Order.CustomerEmail</p>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <a asp-action="Index" class="btn-secondary">Back to Checkout</a>
+                        <button type="submit" class="btn-primary">Complete Payment</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="order-summary">
+                <div class="order-summary-header">
+                    <h2>Order Summary</h2>
+                </div>
+
+                <div class="order-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Order Type:</span>
+                        <span class="detail-value">@Model.Order.OrderType</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">Delivery Time:</span>
+                        <span class="detail-value">@(Model.Order.DeliveryTime?.ToString("MMM dd, yyyy h:mm tt") ?? "As soon as possible")</span>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Order.SpecialInstructions))
+                    {
+                        <div class="detail-row">
+                            <span class="detail-label">Special Instructions:</span>
+                            <span class="detail-value">@Model.Order.SpecialInstructions</span>
+                        </div>
+                    }
+                </div>
+
+                <div class="order-totals">
+                    <div class="total-row">
+                        <span>Subtotal</span>
+                        <span>₹@Model.Order.SubTotal.ToString("F2")</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax (5%)</span>
+                        <span>₹@Model.Order.Tax.ToString("F2")</span>
+                    </div>
+                    @if (Model.Order.DeliveryFee > 0)
+                    {
+                        <div class="total-row">
+                            <span>Delivery Fee</span>
+                            <span>₹@Model.Order.DeliveryFee.ToString("F2")</span>
+                        </div>
+                    }
+                    <div class="total-row grand-total">
+                        <span>Total</span>
+                        <span>₹@Model.Order.Total.ToString("F2")</span>
+                    </div>
+                </div>
+
+                <div class="payment-security">
+                    <div class="security-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="security-text">
+                        <h3>Secure Payment</h3>
+                        <p>Your payment information is encrypted and secure. We never store your card details.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function() {
+            // Handle payment method selection
+            const paymentMethods = document.querySelectorAll('input[name="PaymentMethod"]');
+            const creditCardFields = document.getElementById('creditCardFields');
+            const upiFields = document.getElementById('upiFields');
+            const cashOnDeliveryFields = document.getElementById('cashOnDeliveryFields');
+
+            function updatePaymentFields() {
+                const selectedMethod = document.querySelector('input[name="PaymentMethod"]:checked').value;
+
+                // Hide all payment detail fields
+                creditCardFields.style.display = 'none';
+                upiFields.style.display = 'none';
+                cashOnDeliveryFields.style.display = 'none';
+
+                // Show the selected payment method fields
+                if (selectedMethod === 'Credit Card' || selectedMethod === 'Debit Card') {
+                    creditCardFields.style.display = 'block';
+                } else if (selectedMethod === 'UPI') {
+                    upiFields.style.display = 'block';
+                } else if (selectedMethod === 'Cash on Delivery') {
+                    cashOnDeliveryFields.style.display = 'block';
+                }
+            }
+
+            paymentMethods.forEach(method => {
+                method.addEventListener('change', updatePaymentFields);
+            });
+
+            // Initialize
+            updatePaymentFields();
+
+            // Enable jQuery validation
+            $.validator.setDefaults({
+                ignore: [],
+                highlight: function(element) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element) {
+                    $(element).removeClass('is-invalid');
+                },
+                errorElement: 'div',
+                errorClass: 'invalid-feedback',
+                errorPlacement: function(error, element) {
+                    error.insertAfter(element);
+                }
+            });
+        });
+    </script>
+}

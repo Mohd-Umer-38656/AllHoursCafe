@@ -1,0 +1,67 @@
+@{
+    ViewData["Title"] = "Table Reservation";
+}
+
+<section class="reservation-intro">
+    <div class="container">
+        <div class="reservation-header">
+            <h1>Reserve a Table</h1>
+            <p>Make a reservation at All Hours Cafe to ensure you have a table waiting for you.</p>
+        </div>
+        
+        <div class="reservation-info">
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>Opening Hours</h3>
+                <p>Monday - Friday: 8:00 AM - 10:00 PM</p>
+                <p>Saturday - Sunday: 9:00 AM - 11:00 PM</p>
+            </div>
+            
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <h3>Contact Us</h3>
+                <p>Phone: +91 123 456 7890</p>
+                <p>Email: reservations@allhourscafe.com</p>
+            </div>
+            
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Location</h3>
+                <p>123 Cafe Street</p>
+                <p>New Delhi, India 110001</p>
+            </div>
+        </div>
+        
+        <div class="reservation-cta">
+            <a asp-action="Create" class="btn-primary">Make a Reservation</a>
+        </div>
+    </div>
+</section>
+
+<section class="reservation-policy">
+    <div class="container">
+        <h2>Reservation Policy</h2>
+        <div class="policy-content">
+            <div class="policy-item">
+                <h3>Cancellation</h3>
+                <p>Reservations can be cancelled up to 2 hours before the scheduled time without any charges.</p>
+            </div>
+            
+            <div class="policy-item">
+                <h3>Late Arrival</h3>
+                <p>We hold reservations for 15 minutes past the scheduled time. After that, the table may be given to other guests.</p>
+            </div>
+            
+            <div class="policy-item">
+                <h3>Large Groups</h3>
+                <p>For groups of more than 8 people, please call us directly to make a reservation.</p>
+            </div>
+        </div>
+    </div>
+</section>

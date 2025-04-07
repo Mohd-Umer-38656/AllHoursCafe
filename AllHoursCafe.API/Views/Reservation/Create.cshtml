@@ -1,0 +1,110 @@
+@model AllHoursCafe.API.Models.Reservation
+
+@{
+    ViewData["Title"] = "Make a Reservation";
+}
+
+<section class="reservation-form-section">
+    <div class="container">
+        <div class="reservation-form-header animate-on-scroll" data-animation="fade-down">
+            <h1>Make a Reservation</h1>
+            <p>Please fill out the form below to reserve a table at All Hours Cafe.</p>
+        </div>
+
+        <div class="reservation-form-container animate-on-scroll" data-animation="fade-up" data-delay="200">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group animate-on-scroll" data-animation="fade-right" data-delay="300">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Enter your full name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6 animate-on-scroll" data-animation="fade-right" data-delay="400">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" placeholder="Enter your email address" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-md-6 animate-on-scroll" data-animation="fade-left" data-delay="400">
+                        <label asp-for="PhoneNumber" class="control-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" placeholder="Enter your phone number" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6 animate-on-scroll" data-animation="fade-right" data-delay="500">
+                        <label asp-for="ReservationDate" class="control-label"></label>
+                        <input asp-for="ReservationDate" class="form-control" type="date" />
+                        <span asp-validation-for="ReservationDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-md-6 animate-on-scroll" data-animation="fade-left" data-delay="500">
+                        <label asp-for="ReservationTime" class="control-label"></label>
+                        <input asp-for="ReservationTime" class="form-control" type="time" />
+                        <span asp-validation-for="ReservationTime" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group animate-on-scroll" data-animation="fade-up" data-delay="600">
+                    <label asp-for="NumberOfGuests" class="control-label"></label>
+                    <select asp-for="NumberOfGuests" class="form-control">
+                        @for (int i = 1; i <= 20; i++)
+                        {
+                            <option value="@i">@i @(i == 1 ? "person" : "people")</option>
+                        }
+                    </select>
+                    <span asp-validation-for="NumberOfGuests" class="text-danger"></span>
+                </div>
+
+                <div class="form-group animate-on-scroll" data-animation="fade-up" data-delay="700">
+                    <label asp-for="SpecialRequests" class="control-label"></label>
+                    <textarea asp-for="SpecialRequests" class="form-control" rows="3" placeholder="Any special requests or dietary requirements?"></textarea>
+                    <span asp-validation-for="SpecialRequests" class="text-danger"></span>
+                </div>
+
+                <div class="form-group form-actions animate-on-scroll" data-animation="fade-up" data-delay="800">
+                    <button type="submit" class="btn-primary">Submit Reservation</button>
+                    <a asp-action="Index" class="btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.querySelector('input[type="date"]').setAttribute('min', today);
+
+            // Animation code
+            const animateElements = document.querySelectorAll('.animate-on-scroll');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const element = entry.target;
+                        const delay = element.getAttribute('data-delay') || 0;
+
+                        setTimeout(() => {
+                            element.classList.add('animated');
+                        }, delay);
+
+                        observer.unobserve(element);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
+}

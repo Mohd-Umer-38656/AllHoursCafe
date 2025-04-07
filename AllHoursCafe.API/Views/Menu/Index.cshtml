@@ -1,0 +1,408 @@
+@model IEnumerable<AllHoursCafe.API.Models.Category>
+@using AllHoursCafe.API.Models
+
+@{
+    ViewData["Title"] = "Menu";
+    var menuItems = ViewBag.MenuItems as IEnumerable<MenuItem> ?? new List<MenuItem>();
+}
+
+<section class="menu-section">
+    <div class="container menu-container">
+        <div class="menu-header">
+            <h1>Our Menu</h1>
+            <div class="menu-filters">
+                <div class="category-dropdown">
+                    <button id="categoryButton" class="category-button">
+                        <span>Categories</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div id="categoryDropdown" class="category-dropdown-content">
+                        <div class="category-item active" data-category="all">
+                            <span>All Items</span>
+                        </div>
+                        @foreach (var category in Model)
+                        {
+                            <div class="category-item" data-category="@category.Id">
+                                <span>@category.Name</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Search menu items...">
+                    <button id="searchButton"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <div class="error-message">
+                <p>@ViewBag.ErrorMessage</p>
+                <button class="retry-button" onclick="location.reload()">Retry</button>
+            </div>
+        }
+        else if (!Model.Any())
+        {
+            <div class="error-message">
+                <p>No menu categories available. Please try again later.</p>
+                <button class="retry-button" onclick="location.reload()">Retry</button>
+            </div>
+        }
+        else
+        {
+            <div class="menu-content">
+                <!-- Shopping Cart -->
+                <div class="shopping-cart" id="shoppingCart">
+                    <div class="cart-title">
+                        <h2>Cart</h2>
+                        <button id="cartToggleBtn" class="cart-toggle" onclick="toggleCart(event)"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div class="cart-header">
+                        <h3>Order Summary</h3>
+                    </div>
+                    <div class="cart-items" id="cartItems">
+                        <!-- Cart items will be added here dynamically -->
+                    </div>
+                    <div class="cart-summary">
+                        <div class="cart-total">
+                            <span>Subtotal</span>
+                            <span id="cartTotal">₹0.00</span>
+                        </div>
+                        <button id="checkoutButton" class="checkout-button" onclick="proceedToCheckout()">Proceed to Checkout</button>
+                        <p class="min-order-message" id="minOrderMessage">Add items to your cart to proceed</p>
+                    </div>
+                </div>
+
+
+
+                <!-- Menu items container -->
+                <div class="menu-items-container" id="menuItemsContainer">
+                    @if (!menuItems.Any())
+                    {
+                        <div class="no-items-message">
+                            <p>No menu items available. Please try again later.</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- Group menu items by category -->
+                        <div id="category-all" class="category-section" data-category="all">
+                            <h2 class="category-title">All Items</h2>
+                            <div class="items-grid">
+                                @foreach (var item in menuItems)
+                                {
+                                    <div class="menu-item-card">
+                                        <div class="menu-item-image">
+                                            @{
+                                                var imageUrl = string.IsNullOrEmpty(item.ImageUrl) ? "/images/Items/placeholder.jpg" : $"/images/Items/{item.Category.Name.ToLower()}/{item.ImageUrl}";
+                                                // Map item names to actual image filenames with exact casing
+                                                imageUrl = item.Name switch
+                                                {
+                                                    "Fresh Brewed Coffee" => $"/images/Items/beverages/Fresh-Coffee.jpg",
+                                                    "Grilled Salmon" => $"/images/Items/dinner/Grilled-Salmon.jpg",
+                                                    "Fruit Smoothie" => $"/images/Items/beverages/Fruit-Smoothie.jpg",
+                                                    "Sweet Potato Fries" => $"/images/Items/snacks/Sweet-Potato-Fries.jpg",
+                                                    "Pasta Primavera" => $"/images/Items/dinner/Pasta-Primavera.jpg",
+                                                    "New York Cheesecake" => $"/images/Items/dessert/New-York-Cheesecake.jpg",
+                                                    "Hummus Plate" => $"/images/Items/snacks/Hummus-Plate.jpg",
+                                                    "Iced Tea" => $"/images/Items/beverages/Iced-Tea.jpg",
+                                                    "Classic Pancakes" => $"/images/Items/breakfast/pancake.jpg",
+                                                    "Avocado Toast" => $"/images/Items/breakfast/Avocado-Toast.jpg",
+                                                    "Breakfast Burrito" => $"/images/Items/breakfast/Breakfast-Burrito.jpg",
+                                                    "Chicken Caesar Salad" => $"/images/Items/lunch/Chicken-Salad.jpg",
+                                                    "Turkey Club Sandwich" => $"/images/Items/lunch/turkey-club-sandwich.jpg",
+                                                    "Veggie Wrap" => $"/images/Items/lunch/Veggie-Wrap.jpg",
+                                                    "Chocolate Brownie" => $"/images/Items/dessert/Chocolate-Brownie.jpg",
+                                                    "Fruit Tart" => $"/images/Items/dessert/Fruit-Tart.jpg",
+                                                    "Cheese Board" => $"/images/Items/snacks/Cheese-Board.jpg",
+                                                    "Vegetable Stir Fry" => $"/images/Items/dinner/Vegetable-Fry.jpg",
+                                                    _ => "/images/Items/placeholder.jpg"
+                                                };
+                                                // Force cache refresh by adding timestamp
+                                                imageUrl += $"?v={DateTime.Now.Ticks}";
+                                            }
+                                            <img src="@imageUrl" alt="@item.Name" onerror="this.src='/images/Items/placeholder.jpg'">
+                                        </div>
+                                        <div class="item-details">
+                                            <div class="item-header">
+                                                <h3 class="item-name">@item.Name</h3>
+                                                <span class="item-price">₹@item.Price.ToString("F2")</span>
+                                            </div>
+                                            <p class="item-description">@item.Description</p>
+                                            <div class="item-meta">
+                                                @if (item.IsVegetarian)
+                                                {
+                                                    <span class="badge vegetarian">Vegetarian</span>
+                                                }
+                                                @if (item.IsVegan)
+                                                {
+                                                    <span class="badge vegan">Vegan</span>
+                                                }
+                                                @if (item.IsGlutenFree)
+                                                {
+                                                    <span class="badge gluten-free">Gluten Free</span>
+                                                }
+                                                @if (!string.IsNullOrEmpty(item.SpicyLevel))
+                                                {
+                                                    <span class="badge spicy">Spicy: @item.SpicyLevel</span>
+                                                }
+                                            </div>
+                                            <button class="order-button" onclick="addToCart(@item.Id, '@item.Name', @item.Price, '@imageUrl')">Add to Cart</button>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Display menu items by category -->
+                        @foreach (var category in Model)
+                        {
+                            var categoryItems = menuItems.Where(m => m.CategoryId == category.Id).ToList();
+                            if (categoryItems.Any())
+                            {
+                                <div id="category-@category.Id" class="category-section" data-category="@category.Id" style="display: none;">
+                                    <h2 class="category-title">@category.Name</h2>
+                                    <div class="items-grid">
+                                        @foreach (var item in categoryItems)
+                                        {
+                                            <div class="menu-item-card">
+                                                <div class="menu-item-image">
+                                                    @{
+                                                        var imageUrl = string.IsNullOrEmpty(item.ImageUrl) ? "/images/Items/placeholder.jpg" : $"/images/Items/{item.Category.Name.ToLower()}/{item.ImageUrl}";
+                                                        // Map item names to actual image filenames with exact casing
+                                                        imageUrl = item.Name switch
+                                                        {
+                                                            "Fresh Brewed Coffee" => $"/images/Items/beverages/Fresh-Coffee.jpg",
+                                                            "Grilled Salmon" => $"/images/Items/dinner/Grilled-Salmon.jpg",
+                                                            "Fruit Smoothie" => $"/images/Items/beverages/Fruit-Smoothie.jpg",
+                                                            "Sweet Potato Fries" => $"/images/Items/snacks/Sweet-Potato-Fries.jpg",
+                                                            "Pasta Primavera" => $"/images/Items/dinner/Pasta-Primavera.jpg",
+                                                            "New York Cheesecake" => $"/images/Items/dessert/New-York-Cheesecake.jpg",
+                                                            "Hummus Plate" => $"/images/Items/snacks/Hummus-Plate.jpg",
+                                                            "Iced Tea" => $"/images/Items/beverages/Iced-Tea.jpg",
+                                                            "Classic Pancakes" => $"/images/Items/breakfast/pancake.jpg",
+                                                            "Avocado Toast" => $"/images/Items/breakfast/Avocado-Toast.jpg",
+                                                            "Breakfast Burrito" => $"/images/Items/breakfast/Breakfast-Burrito.jpg",
+                                                            "Chicken Caesar Salad" => $"/images/Items/lunch/Chicken-Salad.jpg",
+                                                            "Turkey Club Sandwich" => $"/images/Items/lunch/turkey-club-sandwich.jpg",
+                                                            "Veggie Wrap" => $"/images/Items/lunch/Veggie-Wrap.jpg",
+                                                            "Chocolate Brownie" => $"/images/Items/dessert/Chocolate-Brownie.jpg",
+                                                            "Fruit Tart" => $"/images/Items/dessert/Fruit-Tart.jpg",
+                                                            "Cheese Board" => $"/images/Items/snacks/Cheese-Board.jpg",
+                                                            "Vegetable Stir Fry" => $"/images/Items/dinner/Vegetable-Fry.jpg",
+                                                            _ => "/images/Items/placeholder.jpg"
+                                                        };
+                                                        // Force cache refresh by adding timestamp
+                                                        imageUrl += $"?v={DateTime.Now.Ticks}";
+                                                    }
+                                                    <img src="@imageUrl" alt="@item.Name" onerror="this.src='/images/Items/placeholder.jpg?v={DateTime.Now.Ticks}'">
+                                                </div>
+                                                <div class="item-details">
+                                                    <div class="item-header">
+                                                        <h3 class="item-name">@item.Name</h3>
+                                                        <span class="item-price">₹@item.Price.ToString("F2")</span>
+                                                    </div>
+                                                    <p class="item-description">@item.Description</p>
+                                                    <div class="item-meta">
+                                                        @if (item.IsVegetarian)
+                                                        {
+                                                            <span class="badge vegetarian">Vegetarian</span>
+                                                        }
+                                                        @if (item.IsVegan)
+                                                        {
+                                                            <span class="badge vegan">Vegan</span>
+                                                        }
+                                                        @if (item.IsGlutenFree)
+                                                        {
+                                                            <span class="badge gluten-free">Gluten Free</span>
+                                                        }
+                                                        @if (!string.IsNullOrEmpty(item.SpicyLevel))
+                                                        {
+                                                            <span class="badge spicy">Spicy: @item.SpicyLevel</span>
+                                                        }
+                                                    </div>
+                                                    <button class="order-button" onclick="addToCart(@item.Id, '@item.Name', @item.Price, '@imageUrl')">Add to Cart</button>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Global function to toggle cart
+        function toggleCart(e) {
+            e.preventDefault();
+            const shoppingCart = document.getElementById('shoppingCart');
+            if (shoppingCart) {
+                shoppingCart.classList.toggle('collapsed');
+                console.log('Cart toggled:', shoppingCart.classList.contains('collapsed'));
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // Category dropdown toggle
+            const categoryButton = document.getElementById('categoryButton');
+            const categoryDropdown = document.getElementById('categoryDropdown');
+
+            if (categoryButton && categoryDropdown) {
+                categoryButton.addEventListener('click', function() {
+                    const dropdown = document.querySelector('.category-dropdown');
+                    dropdown.classList.toggle('active');
+                    categoryDropdown.style.display = categoryDropdown.style.display === 'block' ? 'none' : 'block';
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.category-dropdown')) {
+                        categoryDropdown.style.display = 'none';
+                        document.querySelector('.category-dropdown').classList.remove('active');
+                    }
+                });
+            }
+
+            // Category switching
+            const categoryItems = document.querySelectorAll('.category-item');
+            let isScrolling = false; // Flag to prevent multiple clicks while scrolling
+
+            categoryItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    if (isScrolling) return; // Prevent multiple clicks while scrolling
+
+                    // Remove active class from all categories
+                    categoryItems.forEach(cat => cat.classList.remove('active'));
+
+                    // Add active class to clicked category
+                    this.classList.add('active');
+
+                    // Get category ID
+                    const categoryId = this.getAttribute('data-category');
+
+                    // Update category button text if it's a dropdown item
+                    if (this.closest('.category-dropdown-content')) {
+                        categoryButton.querySelector('span').textContent = this.querySelector('span').textContent;
+                        categoryDropdown.style.display = 'none';
+                        document.querySelector('.category-dropdown').classList.remove('active');
+                    }
+
+                    // Hide all category sections
+                    document.querySelectorAll('.category-section').forEach(section => {
+                        section.style.display = 'none';
+                    });
+
+                    // Show the selected category section
+                    const targetSection = document.getElementById(`category-${categoryId}`);
+                    if (targetSection) {
+                        targetSection.style.display = 'block';
+
+                        // Don't scroll if it's the 'all' category
+                        if (categoryId === 'all') {
+                            window.scrollTo({
+                                top: 0,
+                                behavior: 'smooth'
+                            });
+                            return;
+                        }
+
+                        // Calculate scroll position with offset for header
+                        const menuSection = document.querySelector('.menu-section');
+                        const menuSectionTop = menuSection.offsetTop;
+                        const headerOffset = 120; // Adjust based on your header height
+
+                        isScrolling = true;
+
+                        // Smooth scroll to just below the menu section header
+                        window.scrollTo({
+                            top: menuSectionTop + headerOffset,
+                            behavior: 'smooth'
+                        });
+
+                        // Reset scrolling flag after animation completes
+                        setTimeout(() => {
+                            isScrolling = false;
+                        }, 800); // Typical scroll animation duration
+                    }
+                });
+            });
+
+            // Search functionality
+            function performSearch() {
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                const menuItems = document.querySelectorAll('.menu-item-card');
+
+                // If search term is empty, show all items and return
+                if (!searchTerm) {
+                    menuItems.forEach(item => {
+                        item.style.display = 'flex';
+                    });
+                    return;
+                }
+
+                // Show the "All Items" category when searching
+                document.querySelectorAll('.category-section').forEach(section => {
+                    section.style.display = 'none';
+                });
+                document.getElementById('category-all').style.display = 'block';
+
+                // Update active category in sidebar
+                document.querySelectorAll('.category-item').forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('data-category') === 'all') {
+                        item.classList.add('active');
+                    }
+                });
+
+                // Filter menu items
+                menuItems.forEach(item => {
+                    const name = item.querySelector('.item-name').textContent.toLowerCase();
+                    const description = item.querySelector('.item-description').textContent.toLowerCase();
+
+                    if (name.includes(searchTerm) || description.includes(searchTerm)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+
+            // Set up search input event
+            document.getElementById('searchInput').addEventListener('input', performSearch);
+
+            // Set up search button click
+            document.getElementById('searchButton').addEventListener('click', function(e) {
+                e.preventDefault();
+                performSearch();
+            });
+
+            // Function to check authentication before checkout
+            window.proceedToCheckout = function() {
+                // Check if user is authenticated
+                var isAuthenticated = @(User.Identity != null && User.Identity.IsAuthenticated ? "true" : "false");
+
+                if (isAuthenticated) {
+                    // User is authenticated, proceed to checkout
+                    window.location.href = '/Checkout';
+                } else {
+                    // User is not authenticated, redirect to login
+                    // Store the return URL in session storage
+                    sessionStorage.setItem('returnUrl', '/Checkout');
+                    window.location.href = '/Auth/Login';
+                }
+            };
+        });
+    </script>
+    <script src="/js/cart.js"></script>
+    <script src="/js/menu-animations.js"></script>
+}

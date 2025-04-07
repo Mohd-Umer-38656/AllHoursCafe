@@ -1,0 +1,110 @@
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<section class="contact-section">
+    <div class="container">
+        <h2 class="section-title animate-on-scroll" data-animation="fade-down">Contact Us</h2>
+        <div class="contact-content">
+            <div class="contact-info animate-on-scroll" data-animation="fade-right" data-delay="200">
+                <h3>Get in Touch</h3>
+                <p>We'd love to hear from you! Whether you have a question about our menu, want to make a reservation, or just want to say hello, feel free to reach out.</p>
+
+                <div class="contact-details">
+                    <div class="contact-item animate-on-scroll" data-animation="fade-up" data-delay="300">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Location</h4>
+                            <p>123 Cafe Street<br>Foodie District<br>Your City, ST 12345</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item animate-on-scroll" data-animation="fade-up" data-delay="400">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>(123) 456-7890</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item animate-on-scroll" data-animation="fade-up" data-delay="500">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>info@allhourscafe.com</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item animate-on-scroll" data-animation="fade-up" data-delay="600">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Hours</h4>
+                            <p>Open 24/7<br>365 days a year</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form animate-on-scroll" data-animation="fade-left" data-delay="200">
+                <h3>Send us a Message</h3>
+                <form id="contactForm">
+                    <div class="form-group animate-on-scroll" data-animation="fade-up" data-delay="300">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group animate-on-scroll" data-animation="fade-up" data-delay="400">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group animate-on-scroll" data-animation="fade-up" data-delay="500">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+
+                    <div class="form-group animate-on-scroll" data-animation="fade-up" data-delay="600">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary animate-on-scroll" data-animation="fade-up" data-delay="700">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const animateElements = document.querySelectorAll('.animate-on-scroll');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const element = entry.target;
+                        const delay = element.getAttribute('data-delay') || 0;
+
+                        setTimeout(() => {
+                            element.classList.add('animated');
+                        }, delay);
+
+                        observer.unobserve(element);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // TODO: Implement form submission
+            alert('Thank you for your message! We will get back to you soon.');
+            this.reset();
+        });
+    </script>
+}

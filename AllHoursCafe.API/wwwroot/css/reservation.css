@@ -1,0 +1,376 @@
+/* Reservation Styles */
+
+/* Common Styles */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+h1, h2, h3 {
+    color: #5c4033;
+}
+
+/* Reservation Intro Section */
+.reservation-intro {
+    padding: 13rem 0 4rem;
+    background-color: #f9f5f0;
+}
+
+.reservation-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.reservation-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.reservation-header p {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.reservation-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.info-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    flex: 1;
+    min-width: 250px;
+    max-width: 300px;
+    transition: transform 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+}
+
+.info-icon {
+    font-size: 2rem;
+    color: #5c4033;
+    margin-bottom: 15px;
+}
+
+.info-card h3 {
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.info-card p {
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.reservation-cta {
+    text-align: center;
+}
+
+.btn-primary {
+    display: inline-block;
+    background-color: #5c4033;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #7d5544;
+}
+
+.btn-secondary {
+    display: inline-block;
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 12px 30px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #e0e0e0;
+}
+
+/* Reservation Policy Section */
+.reservation-policy {
+    padding: 60px 0;
+    background-color: #fff;
+}
+
+.reservation-policy h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2rem;
+}
+
+.policy-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.policy-item {
+    flex: 1;
+    min-width: 250px;
+    max-width: 350px;
+    padding: 20px;
+    border-left: 3px solid #5c4033;
+    background-color: #f9f9f9;
+}
+
+.policy-item h3 {
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.policy-item p {
+    color: #666;
+}
+
+/* Reservation Form Section */
+.reservation-form-section {
+    padding: 13rem 0 8rem;
+    background-color: #f9f5f0;
+}
+
+.reservation-form-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.reservation-form-header h1 {
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+    color: #5c4033;
+}
+
+.reservation-form-header p {
+    font-size: 1.2rem;
+    color: #6b5a4c;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.reservation-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 40px 50px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.form-group {
+    margin-bottom: 28px;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    margin-bottom: 10px;
+}
+
+.col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 0 15px;
+}
+
+.control-label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #5c4033;
+    font-size: 1.05rem;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 12px 18px;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #d4d4d4;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+}
+
+.form-control:focus {
+    border-color: #8b7355;
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(92, 64, 51, 0.15);
+}
+
+.text-danger {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 8px;
+    display: block;
+    font-weight: 500;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+}
+
+/* Confirmation Section */
+.confirmation-section {
+    padding: 60px 0;
+    background-color: #f9f5f0;
+}
+
+.confirmation-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.confirmation-icon {
+    font-size: 4rem;
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+.confirmation-details {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.confirmation-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+}
+
+.confirmation-card h2 {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.detail-item {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.detail-label {
+    font-weight: bold;
+    width: 180px;
+    color: #666;
+}
+
+.detail-value {
+    flex: 1;
+}
+
+.confirmation-info {
+    background-color: #f0f7ff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.confirmation-info p {
+    margin-bottom: 10px;
+}
+
+.confirmation-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .form-actions .btn-primary,
+    .form-actions .btn-secondary {
+        width: 100%;
+        text-align: center;
+    }
+
+    .detail-item {
+        flex-direction: column;
+    }
+
+    .detail-label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .confirmation-actions {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .confirmation-actions .btn-primary,
+    .confirmation-actions .btn-secondary {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Submit Button Styles */
+button[type="submit"] {
+    background-color: #5c4033;
+    color: white;
+    border: none;
+    padding: 14px 35px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(92, 64, 51, 0.2);
+}
+
+button[type="submit"]:hover {
+    background-color: #8b7355;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(92, 64, 51, 0.25);
+}
+
+button[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(92, 64, 51, 0.2);
+}

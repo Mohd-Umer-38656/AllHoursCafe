@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AllHoursCafe</title>
+    <link rel="stylesheet" href="~/css/styles.css?v=@DateTime.Now.Ticks" />
+    <link rel="stylesheet" href="~/css/views.css?v=@DateTime.Now.Ticks" />
+    <link rel="stylesheet" href="~/css/menu-new.css?v=@DateTime.Now.Ticks" />
+    <link rel="stylesheet" href="~/css/cart.css?v=@DateTime.Now.Ticks" />
+    <link rel="stylesheet" href="~/css/reservation.css?v=@DateTime.Now.Ticks" />
+    <link rel="stylesheet" href="~/css/home.css?v=@DateTime.Now.Ticks" />
+    <link rel="stylesheet" href="~/css/checkout.css?v=@DateTime.Now.Ticks" />
+    <link rel="stylesheet" href="~/css/new-styles.css?v=@DateTime.Now.Ticks" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabriela&display=swap" />
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <button type="button" class="mobile-menu-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-left">
+                <a asp-controller="Home" asp-action="Index" class="nav-button @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")">HOME</a>
+                <a asp-controller="Menu" asp-action="Index" class="nav-link">MENU</a>
+                <a asp-controller="Reservation" asp-action="Index" class="nav-link">RESERVE TABLE</a>
+            </div>
+
+            <div class="nav-center">
+                <a asp-controller="Home" asp-action="Index" class="logo-link">
+                    <img src="/images/logo.png" alt="AllHoursCafe Logo" class="logo-img">
+                </a>
+            </div>
+
+            <div class="nav-right">
+                <a asp-controller="Home" asp-action="About" class="nav-link">ABOUT</a>
+                <a asp-controller="Home" asp-action="Contact" class="nav-link">CONTACT</a>
+                <div class="cart-wrapper">
+                    <a asp-controller="Checkout" asp-action="Index" class="cart-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cartCount" class="cart-count">@(User.Identity?.IsAuthenticated == true ? "3" : "0")</span>
+                    </a>
+                </div>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <div class="user-info">
+                        <form asp-controller="Auth" asp-action="Logout" method="post" id="logoutForm" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="logout-link">Logout</button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div class="auth-links">
+                        <a asp-controller="Auth" asp-action="Login" class="nav-link">LOGIN</a>
+                        <a asp-controller="Auth" asp-action="Signup" class="nav-link">SIGNUP</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </header>
+
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-logo">
+                    <img src="~/images/logo.png" alt="AllHoursCafe Logo" class="footer-logo-img">
+                    <p>Your perfect destination for great coffee, delicious food, and a welcoming atmosphere.</p>
+                </div>
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h3>Explore</h3>
+                        <ul>
+                            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li><a asp-controller="Menu" asp-action="Index">Our Menu</a></li>
+                            <li><a asp-controller="Reservation" asp-action="Create">Reservations</a></li>
+                            <li><a asp-controller="Home" asp-action="About">About Us</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Visit Us</h3>
+                        <p>
+                            <i class="fas fa-map-marker-alt"></i> 123 Cafe Street, City Center<br>
+                            <i class="fas fa-clock"></i> Open 24/7<br>
+                            <i class="fas fa-phone"></i> +91 98765 43210<br>
+                            <i class="fas fa-envelope"></i> hello@allhourscafe.com
+                        </p>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Connect With Us</h3>
+                        <div class="social-links">
+                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                        </div>
+                        <div class="newsletter">
+                            <h4>Subscribe to our newsletter</h4>
+                            <form class="newsletter-form">
+                                <input type="email" placeholder="Your email address" required>
+                                <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; @DateTime.Now.Year AllHoursCafe. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/js/auth.js"></script>
+    <script src="~/js/cart.js"></script>
+    <script src="~/js/navbar.js"></script>
+    <script src="~/js/animations.js"></script>
+    <script src="~/js/logout.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

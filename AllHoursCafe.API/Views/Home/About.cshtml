@@ -1,0 +1,115 @@
+@{
+    ViewData["Title"] = "About Us";
+}
+
+<section class="about-section">
+    <div class="container">
+        <h2 class="section-title animate-on-scroll" data-animation="fade-down">About AllHoursCafe</h2>
+
+        <!-- Introduction Section with Chef Image -->
+        <div class="about-intro-section">
+            <div class="about-image-container animate-on-scroll" data-animation="fade-right">
+                <div class="about-image">
+                    <img src="/images/cook.jpeg" alt="Our Chef" class="animated">
+                </div>
+            </div>
+
+            <div class="about-intro-text animate-on-scroll" data-animation="fade-left">
+                <h3 class="intro-heading">Welcome to AllHoursCafe</h3>
+                <p class="about-intro">Your 24/7 destination for delicious food and beverages. We take pride in serving our community with the finest ingredients and exceptional service at any hour of the day.</p>
+                <div class="chef-quote">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p>"Our passion is creating memorable dining experiences through quality ingredients and exceptional service."</p>
+                    <span class="quote-author">— Head Chef</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story & Mission Section -->
+        <div class="about-details-section">
+            <div class="about-story animate-on-scroll" data-animation="fade-up" data-delay="200">
+                <div class="about-section-item">
+                    <div class="section-icon"><i class="fas fa-book"></i></div>
+                    <h3>Our Story</h3>
+                    <p>Founded in 2020, AllHoursCafe was born from a simple idea: great food should be available whenever you want it. We understand that life doesn't always follow a 9-to-5 schedule, and neither should your dining options.</p>
+                </div>
+            </div>
+
+            <div class="about-mission animate-on-scroll" data-animation="fade-up" data-delay="400">
+                <div class="about-section-item">
+                    <div class="section-icon"><i class="fas fa-bullseye"></i></div>
+                    <h3>Our Mission</h3>
+                    <p>To provide high-quality, delicious food and beverages in a welcoming atmosphere, any time of day or night, while maintaining exceptional service and fostering a sense of community.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Values Section -->
+        <div class="about-values-section animate-on-scroll" data-animation="fade-up" data-delay="600">
+            <h3 class="values-heading">Our Values</h3>
+            <ul class="values-list">
+                <li class="animate-on-scroll" data-animation="fade-right" data-delay="700">
+                    <i class="fas fa-leaf"></i>
+                    <div class="value-content">
+                        <h4>Quality Ingredients</h4>
+                        <p>We source only the freshest, highest quality ingredients for all our dishes.</p>
+                    </div>
+                </li>
+                <li class="animate-on-scroll" data-animation="fade-right" data-delay="800">
+                    <i class="fas fa-heart"></i>
+                    <div class="value-content">
+                        <h4>Exceptional Service</h4>
+                        <p>Our staff is dedicated to providing attentive and friendly service to every guest.</p>
+                    </div>
+                </li>
+                <li class="animate-on-scroll" data-animation="fade-right" data-delay="900">
+                    <i class="fas fa-home"></i>
+                    <div class="value-content">
+                        <h4>Welcoming Environment</h4>
+                        <p>We maintain a clean, comfortable space where everyone feels welcome.</p>
+                    </div>
+                </li>
+                <li class="animate-on-scroll" data-animation="fade-right" data-delay="1000">
+                    <i class="fas fa-users"></i>
+                    <div class="value-content">
+                        <h4>Community Engagement</h4>
+                        <p>We actively participate in and support our local community.</p>
+                    </div>
+                </li>
+                <li class="animate-on-scroll sustainability-card" data-animation="fade-up" data-delay="1100">
+                    <i class="fas fa-recycle"></i>
+                    <div class="value-content">
+                        <h4>Sustainability</h4>
+                        <p>We're committed to environmentally responsible practices in all aspects of our business.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Animation Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const animateElements = document.querySelectorAll('.animate-on-scroll');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const element = entry.target;
+                    const delay = element.getAttribute('data-delay') || 0;
+
+                    setTimeout(() => {
+                        element.classList.add('animated');
+                    }, delay);
+
+                    observer.unobserve(element);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        animateElements.forEach(element => {
+            observer.observe(element);
+        });
+    });
+</script>

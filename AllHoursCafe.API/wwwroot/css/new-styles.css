@@ -1,0 +1,378 @@
+/* New Reservation Section Styles */
+#reservation-cta {
+    background: linear-gradient(rgba(74, 60, 49, 0.85), rgba(74, 60, 49, 0.9)), url('../images/reservation-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #fff;
+    text-align: center;
+    padding: 6rem 0;
+}
+
+.reservation-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.reservation-content h2 {
+    font-size: 2.8rem;
+    margin-bottom: 1.5rem;
+    font-family: var(--heading-font);
+    font-weight: 300;
+}
+
+.reservation-content > p {
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.8;
+}
+
+.reservation-features {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.reservation-feature {
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 2rem;
+    border-radius: 10px;
+    width: 250px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    border: 1px solid rgba(212, 185, 150, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.reservation-feature:hover {
+    transform: translateY(-10px);
+    background-color: rgba(255, 255, 255, 0.25);
+    border-color: rgba(212, 185, 150, 0.6);
+}
+
+.reservation-feature i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #e6d2b8;
+}
+
+.reservation-feature h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-family: var(--heading-font);
+    font-weight: 300;
+}
+
+.reservation-feature p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.cta-button.primary {
+    font-size: 1.1rem;
+    padding: 1.2rem 2.5rem;
+    background-color: #e6d2b8;
+    color: #4a3c31;
+    border: 2px solid #e6d2b8;
+    font-weight: 600;
+    letter-spacing: 1px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.cta-button.primary:hover {
+    background-color: transparent;
+    color: #e6d2b8;
+    border-color: #e6d2b8;
+}
+
+/* New Footer Styles */
+.footer {
+    background-color: #f9f5f0;
+    color: #4a3c31;
+    padding: 0;
+    border-top: 1px solid rgba(74, 60, 49, 0.1);
+    margin-top: auto;
+    z-index: 100;
+    width: 100%;
+}
+
+.footer-top {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 4rem 0 2rem;
+    gap: 3rem;
+}
+
+.footer-logo {
+    flex: 1;
+    min-width: 300px;
+}
+
+.footer-logo-img {
+    height: 166px;
+    margin-bottom: -1.5rem;
+}
+
+.footer-logo p {
+    color: #6b5a4c;
+    line-height: 1.7;
+    max-width: 350px;
+}
+
+.footer-content {
+    flex: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-section h3 {
+    color: #5c4033;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    font-family: var(--heading-font);
+    font-weight: 300;
+    position: relative;
+}
+
+.footer-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background-color: #d4b996;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-section ul li a {
+    color: #6b5a4c;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: #d4b996;
+}
+
+.footer-section p {
+    color: #6b5a4c;
+    line-height: 1.8;
+}
+
+.footer-section p i {
+    width: 20px;
+    margin-right: 10px;
+    color: #8b7355;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(92, 64, 51, 0.1);
+    border-radius: 50%;
+    color: #5c4033;
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    background-color: #d4b996;
+    color: #fff;
+    transform: translateY(-3px);
+}
+
+.newsletter h4 {
+    color: #5c4033;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+.newsletter-form {
+    display: flex;
+    height: 45px;
+}
+
+.newsletter-form input {
+    flex: 1;
+    padding: 0 15px;
+    border: none;
+    border-radius: 4px 0 0 4px;
+    outline: none;
+}
+
+.newsletter-form button {
+    width: 45px;
+    background-color: #8b7355;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.newsletter-form button:hover {
+    background-color: #5c4033;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(74, 60, 49, 0.1);
+    padding: 1.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-bottom p {
+    color: #8b7355;
+    font-size: 0.9rem;
+}
+
+.footer-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.footer-links a {
+    color: #8b7355;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #5c4033;
+}
+
+/* Page Layout Fixes */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+}
+
+main {
+    flex: 1 0 auto;
+    padding-bottom: 4rem; /* Space for footer */
+}
+
+.footer {
+    flex-shrink: 0;
+}
+
+/* Fix for specific pages */
+.menu-section,
+.about-section,
+.contact-section {
+    min-height: calc(100vh - 400px); /* Adjust based on footer and header height */
+    padding-bottom: 6rem;
+    margin-bottom: 0;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .footer-top {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .footer-logo {
+        text-align: center;
+    }
+
+    .footer-logo p {
+        max-width: 100%;
+    }
+
+    .footer-content {
+        justify-content: space-between;
+    }
+
+    .footer-section {
+        min-width: 45%;
+    }
+}
+
+@media (max-width: 768px) {
+    .reservation-feature {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-links {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .footer-content {
+        flex-direction: column;
+    }
+
+    .footer-section {
+        min-width: 100%;
+    }
+
+    .footer-section h3 {
+        text-align: center;
+    }
+
+    .footer-section h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .footer-section ul {
+        text-align: center;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+
+    .newsletter h4 {
+        text-align: center;
+    }
+}
