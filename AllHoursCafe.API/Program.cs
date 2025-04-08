@@ -60,6 +60,7 @@ builder.Services.AddAuthentication(options =>
     options.Cookie.Name = "AllHoursCafe.Auth";
     options.LoginPath = "/Auth/Login";
     options.LogoutPath = "/Auth/Logout";
+    options.AccessDeniedPath = "/Home/AccessDenied";
     options.ExpireTimeSpan = TimeSpan.FromDays(7);
     options.SlidingExpiration = true;
 })

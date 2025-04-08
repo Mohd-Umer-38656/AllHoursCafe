@@ -50,7 +50,7 @@ namespace AllHoursCafe.API.Controllers
         // POST: /Auth/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
         {
             if (!ModelState.IsValid)
             {
@@ -64,6 +64,14 @@ namespace AllHoursCafe.API.Controllers
                 return View(model);
             }
 
+            // If the password is verified but not in BCrypt format, update it to BCrypt
+            if (!IsBCryptHash(user.PasswordHash))
+            {
+                _logger.LogInformation("Upgrading password hash to BCrypt for user {Email}", user.Email);
+                user.PasswordHash = HashPassword(model.Password);
+                await _context.SaveChangesAsync();
+            }
+
             if (!user.IsActive)
             {
                 ModelState.AddModelError("", "Account is inactive");
@@ -75,7 +83,8 @@ namespace AllHoursCafe.API.Controllers
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.FullName)
+                new Claim(ClaimTypes.Name, user.FullName),
+                new Claim(ClaimTypes.Role, user.Role)
             };
 
             // Create identity and principal
@@ -145,7 +154,8 @@ namespace AllHoursCafe.API.Controllers
                     Email = model.Email,
                     PasswordHash = HashPassword(model.Password),
                     IsActive = true,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.UtcNow,
+                    Role = model.Role // Default is "User" as set in the model
                 };
 
                 _logger.LogInformation("Adding new user with email: {Email}", model.Email);
@@ -200,16 +210,43 @@ namespace AllHoursCafe.API.Controllers
 
         private string HashPassword(string password)
         {
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+        private bool VerifyPassword(string password, string hash)
+        {
+            // Check if the hash is in BCrypt format
+            if (IsBCryptHash(hash))
+            {
+                try
+                {
+                    return BCrypt.Net.BCrypt.Verify(password, hash);
+                }
+                catch (BCrypt.Net.SaltParseException)
+                {
+                    // If BCrypt verification fails, fall back to SHA256
+                    return HashPasswordSHA256(password) == hash;
+                }
+            }
+            else
+            {
+                // For backward compatibility with SHA256 hashes
+                return HashPasswordSHA256(password) == hash;
+            }
+        }
+
+        private bool IsBCryptHash(string hash)
+        {
+            return hash != null && hash.StartsWith("$2");
+        }
+
+        private string HashPasswordSHA256(string password)
+        {
             using (var sha256 = SHA256.Create())
             {
                 var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
                 return Convert.ToBase64String(hashedBytes);
             }
-        }
-
-        private bool VerifyPassword(string password, string hash)
-        {
-            return HashPassword(password) == hash;
         }
 
         private string GenerateJwtToken(User user)
@@ -222,7 +259,8 @@ namespace AllHoursCafe.API.Controllers
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Name, user.FullName)
+                    new Claim(ClaimTypes.Name, user.FullName),
+                    new Claim(ClaimTypes.Role, user.Role)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(

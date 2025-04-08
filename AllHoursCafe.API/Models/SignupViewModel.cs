@@ -43,5 +43,9 @@ namespace AllHoursCafe.API.Models
 
         [Display(Name = "Preferred Language")]
         public string? PreferredLanguage { get; set; }
+
+        // Hidden field, not displayed to users
+        [StringLength(20)]
+        public string Role { get; set; } = "User";
     }
-} 
+}

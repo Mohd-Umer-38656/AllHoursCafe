@@ -36,6 +36,14 @@ namespace AllHoursCafe.API.Data
                     await SeedMenuItemsAsync();
                     _logger.LogInformation("Menu items seeded successfully.");
                 }
+
+                // Seed admin user if none exists
+                if (!await _context.Users.AnyAsync(u => u.Role == "Admin"))
+                {
+                    _logger.LogInformation("Seeding admin user to database...");
+                    await SeedAdminUserAsync();
+                    _logger.LogInformation("Admin user seeded successfully.");
+                }
             }
             catch (Exception ex)
             {
@@ -53,7 +61,7 @@ namespace AllHoursCafe.API.Data
                     Id = 1,
                     Name = "Breakfast",
                     Description = "Start your day with our delicious breakfast options",
-                    ImageUrl = "/images/items/breakfast.jpg",
+                    ImageUrl = "/images/categories/breakfast.jpg",
                     IsActive = true
                 },
                 new Category
@@ -113,7 +121,7 @@ namespace AllHoursCafe.API.Data
                     Name = "Classic Pancakes",
                     Description = "Fluffy pancakes served with maple syrup and butter",
                     Price = 200m,
-                    ImageUrl = "/images/Items/breakfast/pancake.jpg",
+                    ImageUrl = "/images/Items/breakfast/classic-pancake.jpg",
                     IsVegetarian = true,
                     IsVegan = false,
                     IsGlutenFree = false,
@@ -163,7 +171,7 @@ namespace AllHoursCafe.API.Data
                     Name = "Chicken Caesar Salad",
                     Description = "Romaine lettuce, grilled chicken, croutons, and Caesar dressing",
                     Price = 120m,
-                    ImageUrl = "/images/Items/lunch/Chicken-Salad.jpg",
+                    ImageUrl = "/images/Items/lunch/chicken-caesar-salad.jpg",
                     IsVegetarian = false,
                     IsVegan = false,
                     IsGlutenFree = false,
@@ -228,7 +236,7 @@ namespace AllHoursCafe.API.Data
                     Name = "Vegetable Stir Fry",
                     Description = "Mixed vegetables stir-fried in a savory sauce, served over rice",
                     Price = 140m,
-                    ImageUrl = "/images/Items/dinner/Vegetable-Fry.jpg",
+                    ImageUrl = "/images/Items/dinner/vegetable-stir-fry.jpg",
                     IsVegetarian = true,
                     IsVegan = true,
                     IsGlutenFree = true,
@@ -263,7 +271,7 @@ namespace AllHoursCafe.API.Data
                     Name = "Fresh Brewed Coffee",
                     Description = "Locally roasted coffee beans, brewed fresh",
                     Price = 34m,
-                    ImageUrl = "/images/Items/beverages/Fresh-Coffee.jpg",
+                    ImageUrl = "/images/Items/beverages/fresh-brewed-coffee.jpg",
                     IsVegetarian = true,
                     IsVegan = true,
                     IsGlutenFree = true,
@@ -313,7 +321,7 @@ namespace AllHoursCafe.API.Data
                     Name = "Chocolate Brownie",
                     Description = "Rich chocolate brownie served with vanilla ice cream",
                     Price = 69m,
-                    ImageUrl = "/images/Items/desserts/Chocolate-Brownie.jpg",
+                    ImageUrl = "/images/Items/dessert/chocolate-brownie.jpg",
                     IsVegetarian = true,
                     IsVegan = false,
                     IsGlutenFree = false,
@@ -328,7 +336,7 @@ namespace AllHoursCafe.API.Data
                     Name = "New York Cheesecake",
                     Description = "Classic New York style cheesecake with berry compote",
                     Price = 79m,
-                    ImageUrl = "/images/Items/desserts/New-York-Cheesecake.jpg",
+                    ImageUrl = "/images/Items/dessert/new-york-cheesecake.jpg",
                     IsVegetarian = true,
                     IsVegan = false,
                     IsGlutenFree = false,
@@ -343,7 +351,7 @@ namespace AllHoursCafe.API.Data
                     Name = "Fruit Tart",
                     Description = "Buttery pastry shell filled with custard and topped with fresh seasonal fruits",
                     Price = 64m,
-                    ImageUrl = "/images/Items/desserts/Fruit-Tart.jpg",
+                    ImageUrl = "/images/Items/dessert/fruit-tart.jpg",
                     IsVegetarian = true,
                     IsVegan = false,
                     IsGlutenFree = false,
@@ -415,6 +423,26 @@ namespace AllHoursCafe.API.Data
 
             // Save changes to the database
             await _context.SaveChangesAsync();
+        }
+
+        private async Task SeedAdminUserAsync()
+        {
+            // Create admin user
+            var adminUser = new User
+            {
+                FullName = "Admin User",
+                Email = "admin@allhourscafe.com",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123"), // Default password: Admin@123
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow,
+                Role = "Admin"
+            };
+
+            // Add admin user to the database
+            await _context.Users.AddAsync(adminUser);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Admin user created with email: {Email}", adminUser.Email);
         }
     }
 }

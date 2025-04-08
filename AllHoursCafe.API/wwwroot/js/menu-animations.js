@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error(`Failed to load image for ${itemName} in category ${categoryId}`);
 
             // Set a fallback image
-            this.src = '/images/menu/placeholder.jpg';
+            this.src = '/images/menu/placeholder.jpg?v=' + new Date().getTime();
         };
     });
     // Add staggered animation to menu items

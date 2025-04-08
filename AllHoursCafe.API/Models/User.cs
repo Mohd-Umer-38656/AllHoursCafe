@@ -39,5 +39,8 @@ namespace AllHoursCafe.API.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public string? ProfilePictureUrl { get; set; }
+
+        [StringLength(20)]
+        public string Role { get; set; } = "User"; // Default role is User
     }
-} 
+}

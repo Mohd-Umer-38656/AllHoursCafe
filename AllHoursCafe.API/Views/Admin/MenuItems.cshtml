@@ -1,0 +1,70 @@
+@model IEnumerable<AllHoursCafe.API.Models.MenuItem>
+@{
+    ViewData["Title"] = "Menu Items";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-header">
+    <h1 class="admin-title">Menu Items</h1>
+    <div class="admin-actions">
+        <a asp-action="CreateMenuItem" class="btn btn-success">
+            <i class="fas fa-plus"></i> Add New
+        </a>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@(item.ImageUrl + (item.ImageUrl.Contains("?") ? "&" : "?") + "v=" + DateTime.Now.Ticks)" alt="@item.Name" style="width: 50px; height: 50px; object-fit: cover;" onerror="this.src='/images/Items/placeholder.jpg'" />
+                    </td>
+                    <td>@item.Name</td>
+                    <td>@item.Category?.Name</td>
+                    <td>₹@item.Price.ToString("F2")</td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <span class="badge bg-success text-white">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger text-white">Inactive</span>
+                        }
+                    </td>
+                    <td class="actions">
+                        <a asp-action="MenuItemDetails" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a asp-action="EditMenuItem" asp-route-id="@item.Id" class="btn btn-primary btn-sm">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a asp-action="DeleteMenuItem" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No menu items found. <a asp-action="CreateMenuItem">Add your first menu item</a>.
+    </div>
+}

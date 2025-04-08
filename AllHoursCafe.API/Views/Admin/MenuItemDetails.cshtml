@@ -1,0 +1,105 @@
+@model AllHoursCafe.API.Models.MenuItem
+@{
+    ViewData["Title"] = "Menu Item Details";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-header">
+    <h1 class="admin-title">Menu Item Details</h1>
+    <div class="admin-actions">
+        <a asp-action="EditMenuItem" asp-route-id="@Model.Id" class="btn btn-primary">
+            <i class="fas fa-edit"></i> Edit
+        </a>
+        <a asp-action="MenuItems" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="admin-form">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="image-preview" style="max-width: 100%;">
+                <img src="@(Model.ImageUrl + (Model.ImageUrl.Contains("?") ? "&" : "?") + "v=" + DateTime.Now.Ticks)" alt="@Model.Name" style="width: 100%;" onerror="this.src='/images/Items/placeholder.jpg'" />
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="detail-item">
+                <div class="detail-label">Name</div>
+                <div class="detail-value">@Model.Name</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Description</div>
+                <div class="detail-value">@Model.Description</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Price</div>
+                <div class="detail-value">₹@Model.Price.ToString("F2")</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Category</div>
+                <div class="detail-value">@Model.Category?.Name</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Spicy Level</div>
+                <div class="detail-value">@(string.IsNullOrEmpty(Model.SpicyLevel) ? "None" : Model.SpicyLevel)</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Preparation Time</div>
+                <div class="detail-value">@(Model.PrepTimeMinutes.HasValue ? $"{Model.PrepTimeMinutes} minutes" : "Not specified")</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Calories</div>
+                <div class="detail-value">@(Model.Calories.HasValue ? $"{Model.Calories} cal" : "Not specified")</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Dietary Information</div>
+                <div class="detail-value">
+                    @if (Model.IsVegetarian)
+                    {
+                        <span class="badge bg-success">Vegetarian</span>
+                    }
+                    @if (Model.IsVegan)
+                    {
+                        <span class="badge bg-success">Vegan</span>
+                    }
+                    @if (Model.IsGlutenFree)
+                    {
+                        <span class="badge bg-success">Gluten Free</span>
+                    }
+                    @if (!Model.IsVegetarian && !Model.IsVegan && !Model.IsGlutenFree)
+                    {
+                        <span>No special dietary information</span>
+                    }
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Status</div>
+                <div class="detail-value">
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Inactive</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-actions mt-4">
+        <a asp-action="EditMenuItem" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+        <a asp-action="DeleteMenuItem" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+        <a asp-action="MenuItems" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>

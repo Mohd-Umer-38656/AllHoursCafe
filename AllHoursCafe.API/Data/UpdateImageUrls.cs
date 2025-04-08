@@ -34,15 +34,21 @@ namespace AllHoursCafe.API.Data
                     // Extract the filename from the old path
                     string oldFileName = Path.GetFileName(item.ImageUrl);
                     string categoryName = item.Category?.Name?.ToLower() ?? "unknown";
-                    
+
+                    // Special handling for dessert items
+                    if (item.Name == "Chocolate Brownie" || item.Name == "New York Cheesecake" || item.Name == "Fruit Tart")
+                    {
+                        categoryName = "dessert";
+                    }
+
                     // Map old filenames to new filenames
                     string newFileName = MapFileName(oldFileName, item.Name);
-                    
+
                     // Create the new path
                     string newPath = $"/images/Items/{categoryName}/{newFileName}";
-                    
+
                     _logger.LogInformation($"Updating image URL for {item.Name} from {item.ImageUrl} to {newPath}");
-                    
+
                     // Update the image URL
                     item.ImageUrl = newPath;
                 }
@@ -60,16 +66,44 @@ namespace AllHoursCafe.API.Data
 
         private string MapFileName(string oldFileName, string itemName)
         {
-            // Map common filenames to the actual files in the Items directory
-            switch (oldFileName.ToLower())
+            // Map item names to the actual image files
+            switch (itemName)
             {
-                case "pancakes.jpg":
-                    return "pancake.jpg";
-                case "avocado-toast.jpg":
+                case "Classic Pancakes":
+                    return "classic-pancake.jpg";
+                case "Chicken Caesar Salad":
+                    return "chicken-caesar-salad.jpg";
+                case "Vegetable Stir Fry":
+                    return "vegetable-stir-fry.jpg";
+                case "Fresh Brewed Coffee":
+                    return "fresh-brewed-coffee.jpg";
+                case "Chocolate Brownie":
+                    return "chocolate-brownie.jpg";
+                case "New York Cheesecake":
+                    return "new-york-cheesecake.jpg";
+                case "Fruit Tart":
+                    return "fruit-tart.jpg";
+                case "Avocado Toast":
                     return "Avocado-Toast.jpg";
-                case "breakfast-burrito.jpg":
+                case "Breakfast Burrito":
                     return "Breakfast-Burrito.jpg";
-                // Add more mappings as needed
+                case "Turkey Club Sandwich":
+                    return "turkey-club-sandwich.jpg";
+                case "Grilled Salmon":
+                    return "Grilled-Salmon.jpg";
+                case "Pasta Primavera":
+                    return "Pasta-Primavera.jpg";
+                case "Iced Tea":
+                    return "Iced-Tea.jpg";
+                case "Fruit Smoothie":
+                    return "Fruit-Smoothie.jpg";
+                case "Hummus Plate":
+                    return "Hummus-Plate.jpg";
+                case "Cheese Board":
+                    return "Cheese-Board.jpg";
+                case "Sweet Potato Fries":
+                    return "Sweet-Potato-Fries.jpg";
+                // Default case
                 default:
                     // If no specific mapping, try to use a simplified version of the item name
                     return itemName.Replace(" ", "-").ToLower() + ".jpg";

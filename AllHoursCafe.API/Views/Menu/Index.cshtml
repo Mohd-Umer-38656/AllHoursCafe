@@ -95,34 +95,34 @@
                                     <div class="menu-item-card">
                                         <div class="menu-item-image">
                                             @{
-                                                var imageUrl = string.IsNullOrEmpty(item.ImageUrl) ? "/images/Items/placeholder.jpg" : $"/images/Items/{item.Category.Name.ToLower()}/{item.ImageUrl}";
+                                                var imageUrl = string.IsNullOrEmpty(item.ImageUrl) ? "/images/menu/placeholder.jpg" : $"/images/Items/{item.Category.Name.ToLower()}/{item.ImageUrl}";
                                                 // Map item names to actual image filenames with exact casing
                                                 imageUrl = item.Name switch
                                                 {
-                                                    "Fresh Brewed Coffee" => $"/images/Items/beverages/Fresh-Coffee.jpg",
+                                                    "Fresh Brewed Coffee" => $"/images/Items/beverages/fresh-brewed-coffee.jpg",
                                                     "Grilled Salmon" => $"/images/Items/dinner/Grilled-Salmon.jpg",
                                                     "Fruit Smoothie" => $"/images/Items/beverages/Fruit-Smoothie.jpg",
                                                     "Sweet Potato Fries" => $"/images/Items/snacks/Sweet-Potato-Fries.jpg",
                                                     "Pasta Primavera" => $"/images/Items/dinner/Pasta-Primavera.jpg",
-                                                    "New York Cheesecake" => $"/images/Items/dessert/New-York-Cheesecake.jpg",
+                                                    "New York Cheesecake" => $"/images/Items/dessert/new-york-cheesecake.jpg",
                                                     "Hummus Plate" => $"/images/Items/snacks/Hummus-Plate.jpg",
                                                     "Iced Tea" => $"/images/Items/beverages/Iced-Tea.jpg",
-                                                    "Classic Pancakes" => $"/images/Items/breakfast/pancake.jpg",
+                                                    "Classic Pancakes" => $"/images/Items/breakfast/classic-pancake.jpg",
                                                     "Avocado Toast" => $"/images/Items/breakfast/Avocado-Toast.jpg",
                                                     "Breakfast Burrito" => $"/images/Items/breakfast/Breakfast-Burrito.jpg",
-                                                    "Chicken Caesar Salad" => $"/images/Items/lunch/Chicken-Salad.jpg",
+                                                    "Chicken Caesar Salad" => $"/images/Items/lunch/chicken-caesar-salad.jpg",
                                                     "Turkey Club Sandwich" => $"/images/Items/lunch/turkey-club-sandwich.jpg",
                                                     "Veggie Wrap" => $"/images/Items/lunch/Veggie-Wrap.jpg",
-                                                    "Chocolate Brownie" => $"/images/Items/dessert/Chocolate-Brownie.jpg",
-                                                    "Fruit Tart" => $"/images/Items/dessert/Fruit-Tart.jpg",
+                                                    "Chocolate Brownie" => $"/images/Items/dessert/chocolate-brownie.jpg",
+                                                    "Fruit Tart" => $"/images/Items/dessert/fruit-tart.jpg",
                                                     "Cheese Board" => $"/images/Items/snacks/Cheese-Board.jpg",
-                                                    "Vegetable Stir Fry" => $"/images/Items/dinner/Vegetable-Fry.jpg",
-                                                    _ => "/images/Items/placeholder.jpg"
+                                                    "Vegetable Stir Fry" => $"/images/Items/dinner/vegetable-stir-fry.jpg",
+                                                    _ => "/images/menu/placeholder.jpg"
                                                 };
                                                 // Force cache refresh by adding timestamp
                                                 imageUrl += $"?v={DateTime.Now.Ticks}";
                                             }
-                                            <img src="@imageUrl" alt="@item.Name" onerror="this.src='/images/Items/placeholder.jpg'">
+                                            <img src="@imageUrl" alt="@item.Name" onerror="this.src='/images/menu/placeholder.jpg?v=' + new Date().getTime()">
                                         </div>
                                         <div class="item-details">
                                             <div class="item-header">
@@ -169,7 +169,7 @@
                                             <div class="menu-item-card">
                                                 <div class="menu-item-image">
                                                     @{
-                                                        var imageUrl = string.IsNullOrEmpty(item.ImageUrl) ? "/images/Items/placeholder.jpg" : $"/images/Items/{item.Category.Name.ToLower()}/{item.ImageUrl}";
+                                                        var imageUrl = string.IsNullOrEmpty(item.ImageUrl) ? "/images/menu/placeholder.jpg" : $"/images/Items/{item.Category.Name.ToLower()}/{item.ImageUrl}";
                                                         // Map item names to actual image filenames with exact casing
                                                         imageUrl = item.Name switch
                                                         {
@@ -191,12 +191,12 @@
                                                             "Fruit Tart" => $"/images/Items/dessert/Fruit-Tart.jpg",
                                                             "Cheese Board" => $"/images/Items/snacks/Cheese-Board.jpg",
                                                             "Vegetable Stir Fry" => $"/images/Items/dinner/Vegetable-Fry.jpg",
-                                                            _ => "/images/Items/placeholder.jpg"
+                                                            _ => "/images/menu/placeholder.jpg"
                                                         };
                                                         // Force cache refresh by adding timestamp
                                                         imageUrl += $"?v={DateTime.Now.Ticks}";
                                                     }
-                                                    <img src="@imageUrl" alt="@item.Name" onerror="this.src='/images/Items/placeholder.jpg?v={DateTime.Now.Ticks}'">
+                                                    <img src="@imageUrl" alt="@item.Name" onerror="this.src='/images/menu/placeholder.jpg?v=' + new Date().getTime()">
                                                 </div>
                                                 <div class="item-details">
                                                     <div class="item-header">
@@ -405,4 +405,5 @@
     </script>
     <script src="/js/cart.js"></script>
     <script src="/js/menu-animations.js"></script>
+    <script src="/js/image-fallback.js"></script>
 }

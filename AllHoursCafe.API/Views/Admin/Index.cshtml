@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-header">
+    <h1 class="admin-title">Admin Dashboard</h1>
+</div>
+
+<div class="admin-cards">
+    <div class="admin-card">
+        <div class="admin-card-title">Menu Items</div>
+        <div class="admin-card-value">@ViewBag.MenuItemsCount</div>
+        <p>Manage your menu items</p>
+        <a asp-action="MenuItems" class="btn btn-primary">View All</a>
+    </div>
+    
+    <div class="admin-card">
+        <div class="admin-card-title">Categories</div>
+        <div class="admin-card-value">@ViewBag.CategoriesCount</div>
+        <p>Manage your menu categories</p>
+        <a asp-action="Categories" class="btn btn-primary">View All</a>
+    </div>
+</div>
+
+<div class="admin-section">
+    <h2>Quick Actions</h2>
+    <div class="admin-actions">
+        <a asp-action="CreateMenuItem" class="btn btn-success">Add New Menu Item</a>
+        <a asp-action="CreateCategory" class="btn btn-success">Add New Category</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Any dashboard-specific JavaScript can go here
+    </script>
+}

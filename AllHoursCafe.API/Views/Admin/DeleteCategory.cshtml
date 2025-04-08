@@ -1,0 +1,61 @@
+@model AllHoursCafe.API.Models.Category
+@{
+    ViewData["Title"] = "Delete Category";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-header">
+    <h1 class="admin-title">Delete Category</h1>
+    <div class="admin-actions">
+        <a asp-action="Categories" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+@if (ViewBag.MenuItemsCount > 0)
+{
+    <div class="alert alert-warning">
+        <h3>Cannot delete this category</h3>
+        <p>This category contains @ViewBag.MenuItemsCount menu item(s). Please delete or reassign these menu items before deleting this category.</p>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger">
+        <h3>Are you sure you want to delete this category?</h3>
+        <p>This action cannot be undone.</p>
+    </div>
+}
+
+<div class="admin-form">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="detail-item">
+                <div class="detail-label">Name</div>
+                <div class="detail-value">@Model.Name</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Description</div>
+                <div class="detail-value">@Model.Description</div>
+            </div>
+        </div>
+    </div>
+
+    <form asp-action="DeleteCategory" method="post" class="mt-4">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-actions">
+            @if (ViewBag.MenuItemsCount > 0)
+            {
+                <a asp-action="MenuItems" class="btn btn-primary">View Menu Items</a>
+                <a asp-action="Categories" class="btn btn-secondary">Back to List</a>
+            }
+            else
+            {
+                <button type="submit" class="btn btn-danger delete-confirm">Delete</button>
+                <a asp-action="Categories" class="btn btn-secondary">Cancel</a>
+            }
+        </div>
+    </form>
+</div>
