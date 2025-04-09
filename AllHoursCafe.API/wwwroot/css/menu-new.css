@@ -7,7 +7,7 @@
 
 .menu-section .container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 86px auto;
     padding: 0 1rem;
 }
 
@@ -568,6 +568,7 @@
 
     .menu-item-card {
         flex-direction: column;
+        margin-bottom: 1.5rem;
     }
 
     .menu-item-image {
@@ -576,7 +577,7 @@
     }
 
     .menu-section {
-        padding: 8rem 0;
+        padding: 6rem 0 2rem 0;
     }
 
     .category-header {
@@ -587,5 +588,15 @@
     .category-image {
         margin-right: 0;
         margin-bottom: 1rem;
+    }
+
+    /* Ensure menu items are fully visible */
+    .menu-content {
+        gap: 1rem;
+    }
+
+    /* Improve spacing between menu items */
+    .category-section {
+        margin-bottom: 2rem;
     }
 }

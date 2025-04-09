@@ -55,6 +55,7 @@ h1, h2, h3, h4, h5, h6, .admin-card-title {
     max-width: 1200px;
     margin: 0 auto;
     position: relative;
+    min-height: calc(100vh - 70px - 80px); /* Subtract navbar and footer heights */
 }
 
 /* Header styling */

@@ -269,21 +269,32 @@
     }
 
     .shopping-cart {
+        position: relative;
+        top: 0;
         width: 100%;
         margin-left: 0;
         margin-bottom: 30px;
-        order: 2;
-        max-width: 600px;
+        order: 1; /* Changed from 2 to 1 to place cart at the top */
+        max-width: 100%;
         align-self: center;
+        height: auto;
+        min-height: auto;
+        max-height: none;
     }
 
     .menu-items-container {
         width: 100%;
-        order: 3;
+        order: 2; /* Changed from 3 to 2 */
     }
 
     .items-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Make cart items scrollable but limit height */
+    .cart-items {
+        max-height: 200px;
+        overflow-y: auto;
     }
 }
 
@@ -308,7 +319,22 @@
     }
 
     .menu-section {
-        padding: 8rem 0;
+        padding: 6rem 0 2rem 0;
+    }
+
+    /* Ensure cart is fully visible on mobile */
+    .shopping-cart {
+        position: relative;
+        top: 0;
+        height: auto;
+        min-height: auto;
+    }
+
+    /* Improve cart toggle visibility */
+    .cart-toggle {
+        padding: 8px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.2);
     }
 }
 
@@ -326,4 +352,22 @@
 /* Ensure the cart title is always visible */
 .shopping-cart.collapsed .cart-title {
     border-radius: 12px;
+}
+
+.shopping-cart.collapsed {
+    height: auto;
+    min-height: auto;
+    margin-bottom: 15px;
+}
+
+/* Ensure the cart doesn't cover content on mobile */
+@media (max-width: 768px) {
+    .shopping-cart.collapsed {
+        margin-bottom: 10px;
+    }
+
+    /* Make the cart toggle more visible */
+    .cart-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
 }

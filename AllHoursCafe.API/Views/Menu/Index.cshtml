@@ -52,6 +52,7 @@
         else
         {
             <div class="menu-content">
+                <!-- Mobile-friendly layout with cart at the top on smaller screens -->
                 <!-- Shopping Cart -->
                 <div class="shopping-cart" id="shoppingCart">
                     <div class="cart-title">
@@ -73,8 +74,6 @@
                         <p class="min-order-message" id="minOrderMessage">Add items to your cart to proceed</p>
                     </div>
                 </div>
-
-
 
                 <!-- Menu items container -->
                 <div class="menu-items-container" id="menuItemsContainer">
@@ -257,6 +256,10 @@
     </div>
 </section>
 
+@section Styles {
+    <link rel="stylesheet" href="/css/menu-responsive.css">
+}
+
 @section Scripts {
     <script>
         // Global function to toggle cart
@@ -265,6 +268,15 @@
             const shoppingCart = document.getElementById('shoppingCart');
             if (shoppingCart) {
                 shoppingCart.classList.toggle('collapsed');
+                // Update the toggle button icon
+                const toggleBtn = document.getElementById('cartToggleBtn');
+                if (toggleBtn) {
+                    if (shoppingCart.classList.contains('collapsed')) {
+                        toggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+                    } else {
+                        toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                    }
+                }
                 console.log('Cart toggled:', shoppingCart.classList.contains('collapsed'));
             }
         }

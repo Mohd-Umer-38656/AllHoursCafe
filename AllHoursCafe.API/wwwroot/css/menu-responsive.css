@@ -1,0 +1,100 @@
+/* Menu Responsive Fixes */
+
+/* Improve the layout on smaller screens */
+@media (max-width: 1200px) {
+    .menu-content {
+        flex-direction: column;
+    }
+
+    .shopping-cart {
+        position: relative;
+        top: 0;
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 30px;
+        order: 1;
+        max-width: 100%;
+        height: auto;
+        min-height: auto;
+    }
+
+    .menu-items-container {
+        width: 100%;
+        order: 2;
+    }
+}
+
+/* Further improvements for mobile screens */
+@media (max-width: 768px) {
+    .menu-section {
+        padding: 6rem 0 2rem 0;
+    }
+
+    .menu-header {
+        margin-bottom: 1rem;
+    }
+
+    .menu-filters {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .category-dropdown, 
+    .search-bar {
+        width: 100%;
+    }
+
+    .shopping-cart {
+        position: relative;
+        top: 0;
+        height: auto;
+        min-height: auto;
+        max-height: none;
+    }
+
+    .shopping-cart.collapsed {
+        height: auto;
+        min-height: auto;
+    }
+
+    .cart-items {
+        max-height: 200px;
+    }
+
+    .items-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-item-card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Make the cart toggle more visible on mobile */
+.cart-toggle {
+    padding: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.cart-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Ensure cart items are visible */
+.cart-items {
+    overflow-y: auto;
+    max-height: 250px;
+}
+
+/* Improve visibility of empty cart message */
+.empty-cart-message {
+    padding: 20px;
+    text-align: center;
+}
+
+/* Make sure the cart doesn't cover content when collapsed */
+.shopping-cart.collapsed {
+    height: auto;
+    min-height: auto;
+}
