@@ -1,0 +1,44 @@
+@{
+    ViewData["Title"] = "Direct Payment";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Payment Page Redirect</h3>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <p class="mt-3">Redirecting to payment page...</p>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        If you are not redirected automatically, please click the button below.
+                    </div>
+                    
+                    <div class="text-center">
+                        <a href="/Checkout/Payment/@ViewBag.OrderId" class="btn btn-primary btn-lg">
+                            Go to Payment Page
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Redirect after a short delay
+            setTimeout(function() {
+                window.location.href = '/Checkout/Payment/@ViewBag.OrderId';
+            }, 2000);
+        });
+    </script>
+}

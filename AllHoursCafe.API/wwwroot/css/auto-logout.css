@@ -1,0 +1,90 @@
+/* Auto Logout Dialog Styling */
+.auto-logout-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.auto-logout-dialog.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.auto-logout-content {
+    background-color: white;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    animation: slideIn 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.auto-logout-header {
+    background-color: var(--primary-color, #4a3c31);
+    color: white;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.auto-logout-header h5 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: white;
+}
+
+.auto-logout-body {
+    padding: 20px;
+}
+
+.auto-logout-body p {
+    margin: 0 0 10px;
+    color: #333;
+}
+
+.auto-logout-body p:last-child {
+    margin-bottom: 0;
+}
+
+#auto-logout-countdown {
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.auto-logout-footer {
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .auto-logout-content {
+        max-width: 90%;
+    }
+}

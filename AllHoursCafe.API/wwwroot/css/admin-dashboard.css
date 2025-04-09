@@ -1,0 +1,313 @@
+/* Quick Actions Section */
+.quick-actions-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 25px;
+}
+
+.quick-action-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    position: relative;
+    transition: all var(--transition-duration) ease;
+    display: flex;
+    align-items: center;
+    padding: 30px;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.quick-action-card:nth-child(1) { animation-delay: 0.1s; }
+.quick-action-card:nth-child(2) { animation-delay: 0.2s; }
+.quick-action-card:nth-child(3) { animation-delay: 0.3s; }
+
+.quick-action-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 5px;
+    background: linear-gradient(to bottom, var(--accent-color), var(--primary-color));
+    border-radius: 3px 0 0 3px;
+}
+
+.quick-action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow);
+}
+
+.quick-action-icon {
+    background-color: rgba(212, 185, 150, 0.15);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    transition: all var(--transition-duration) ease;
+}
+
+.quick-action-icon i {
+    font-size: 28px;
+    color: var(--primary-color);
+    transition: all var(--transition-duration) ease;
+}
+
+.quick-action-card:hover .quick-action-icon {
+    background-color: var(--primary-color);
+    transform: scale(1.1) rotate(5deg);
+}
+
+.quick-action-card:hover .quick-action-icon i {
+    color: white;
+    transform: scale(1.2);
+}
+
+.quick-action-content {
+    flex: 1;
+}
+
+.quick-action-content h3 {
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: var(--primary-color);
+}
+
+.quick-action-content p {
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.quick-action-content .btn {
+    padding: 8px 15px;
+    font-size: 14px;
+    transition: all var(--transition-duration) ease;
+}
+
+.quick-action-content .btn i {
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+.quick-action-content .btn:hover i {
+    transform: translateX(5px);
+}
+
+/* Activity Section */
+.activity-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 25px;
+}
+
+.activity-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    transition: all var(--transition-duration) ease;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.activity-card.reservation-activity { animation-delay: 0.4s; }
+.activity-card.message-activity { animation-delay: 0.5s; }
+
+.activity-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow);
+}
+
+.activity-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.activity-title {
+    display: flex;
+    align-items: center;
+}
+
+.activity-title i {
+    font-size: 18px;
+    color: var(--primary-color);
+    margin-right: 10px;
+}
+
+.activity-title h3 {
+    font-size: 18px;
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.view-all-link {
+    color: var(--primary-color);
+    font-size: 14px;
+    text-decoration: none;
+    transition: all var(--transition-duration) ease;
+    display: flex;
+    align-items: center;
+}
+
+.view-all-link::after {
+    content: '→';
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+.view-all-link:hover {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.view-all-link:hover::after {
+    transform: translateX(5px);
+}
+
+.activity-content {
+    padding: 25px;
+}
+
+.activity-summary {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.activity-icon {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(212, 185, 150, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    position: relative;
+}
+
+.activity-icon i {
+    font-size: 24px;
+    color: var(--primary-color);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #e67e22; /* Orange color to match badge-primary */
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulse 2s infinite;
+    box-shadow: 0 2px 5px rgba(230, 126, 34, 0.3);
+}
+
+.activity-details {
+    flex: 1;
+}
+
+.activity-count {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1.2;
+}
+
+.activity-label {
+    font-size: 14px;
+    color: #666;
+}
+
+.activity-action {
+    display: inline-block;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all var(--transition-duration) ease;
+}
+
+.activity-action i {
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+.activity-action:hover {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.activity-action:hover i {
+    transform: translateX(5px);
+}
+
+.empty-activity {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.empty-activity i {
+    font-size: 36px;
+    color: #ccc;
+    margin-bottom: 10px;
+}
+
+.empty-activity p {
+    color: #888;
+    margin-bottom: 15px;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 2px 5px rgba(230, 126, 34, 0.3);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 5px 15px rgba(230, 126, 34, 0.4);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 2px 5px rgba(230, 126, 34, 0.3);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .quick-actions-container,
+    .activity-container {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-action-card {
+        padding: 20px;
+    }
+
+    .quick-action-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .quick-action-icon i {
+        font-size: 24px;
+    }
+
+    .activity-count {
+        font-size: 24px;
+    }
+}

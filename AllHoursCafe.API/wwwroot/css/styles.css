@@ -241,6 +241,11 @@ header.shrink .logo-img {
     gap: 10px;
 }
 
+/* Ensure proper spacing when admin link is not present */
+.user-info form {
+    margin-left: 0;
+}
+
 .auth-links .nav-link {
     padding: 0 5px;
 }

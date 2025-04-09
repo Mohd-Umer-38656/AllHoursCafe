@@ -13,13 +13,13 @@ namespace AllHoursCafe.API.Models
         public string Name { get; set; }
 
         [StringLength(500)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
 
         public bool IsVegetarian { get; set; }
 
@@ -37,7 +37,7 @@ namespace AllHoursCafe.API.Models
         public Category Category { get; set; }
 
         [StringLength(50)]
-        public string SpicyLevel { get; set; }
+        public string? SpicyLevel { get; set; }
 
         public int? PrepTimeMinutes { get; set; }
 

@@ -1,0 +1,69 @@
+@model AllHoursCafe.API.Models.MenuItem
+@{
+    ViewData["Title"] = "Create Menu Item";
+    Layout = "_AdminLayout";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Create New Menu Item</h4>
+                </div>
+                <div class="card-body">
+                    <form action="/Admin/SimpleCreateMenuItem" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> Fields marked with * are required.
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="Name">Name *</label>
+                            <input type="text" id="Name" name="Name" class="form-control" required />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="Description">Description</label>
+                            <textarea id="Description" name="Description" class="form-control" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="Price">Price (₹) *</label>
+                            <input type="number" id="Price" name="Price" class="form-control" step="0.01" min="0" required />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="CategoryId">Category *</label>
+                            <select id="CategoryId" name="CategoryId" class="form-control" required>
+                                <option value="">-- Select Category --</option>
+                                @foreach (var category in ViewBag.Categories)
+                                {
+                                    <option value="@category.Id">@category.Name</option>
+                                }
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="file">Image</label>
+                            <input type="file" id="file" name="file" class="form-control" accept="image/*" />
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" id="IsActive" name="IsActive" class="form-check-input" checked />
+                                <label for="IsActive" class="form-check-label">Active</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Create Menu Item</button>
+                            <a href="/Admin/MenuItems" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

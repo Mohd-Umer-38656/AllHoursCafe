@@ -1,0 +1,59 @@
+@model AllHoursCafe.API.Models.Order
+
+@{
+    ViewData["Title"] = "Payment Success";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-success">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0 text-center">
+                        <i class="fas fa-check-circle mr-2"></i> Payment Successful!
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="mb-3">
+                            <i class="fas fa-check-circle text-success" style="font-size: 5rem;"></i>
+                        </div>
+                        <h4>Thank you for your order!</h4>
+                        <p class="lead">Your payment has been processed successfully.</p>
+                        
+                        <div class="alert alert-success mt-3">
+                            <strong>Success!</strong> Your order #@Model.Id has been confirmed and is being processed.
+                        </div>
+                    </div>
+                    
+                    <div class="order-details mt-4">
+                        <h5>Order Details</h5>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <p><strong>Order Number:</strong> #@Model.Id</p>
+                                <p><strong>Order Date:</strong> @Model.OrderDate.ToString("MMMM dd, yyyy")</p>
+                                <p><strong>Payment Method:</strong> @Model.PaymentMethod</p>
+                                <p><strong>Total Amount:</strong> ₹@Model.Total.ToString("F2")</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Name:</strong> @Model.CustomerName</p>
+                                <p><strong>Email:</strong> @Model.CustomerEmail</p>
+                                <p><strong>Phone:</strong> @Model.CustomerPhone</p>
+                                <p><strong>Address:</strong> @Model.DeliveryAddress</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <a href="/" class="btn btn-primary">
+                            <i class="fas fa-home mr-2"></i> Return to Home
+                        </a>
+                        <a href="/Menu" class="btn btn-secondary ml-2">
+                            <i class="fas fa-utensils mr-2"></i> Order More
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

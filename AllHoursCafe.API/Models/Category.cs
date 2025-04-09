@@ -12,13 +12,14 @@ namespace AllHoursCafe.API.Models
         public string Name { get; set; }
 
         [StringLength(500)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
-        public string ImageUrl { get; set; }
+        [StringLength(500)]
+        public string? ImageUrl { get; set; }
 
         public bool IsActive { get; set; } = true;
 
         [JsonIgnore] // Prevent circular references in JSON serialization
-        public ICollection<MenuItem> MenuItems { get; set; }
+        public ICollection<MenuItem>? MenuItems { get; set; }
     }
 }

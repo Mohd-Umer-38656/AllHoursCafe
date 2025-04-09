@@ -8,9 +8,11 @@ function loadCart() {
     const savedCart = localStorage.getItem('allHoursCafeCart');
     if (savedCart) {
         window.cart = JSON.parse(savedCart);
-        updateCartUI();
-        updateCartCount();
+    } else {
+        window.cart = [];
     }
+    updateCartUI();
+    updateCartCount();
 }
 
 // Save cart to localStorage
@@ -174,33 +176,30 @@ function updateCartCount(animate = false) {
         const itemCount = window.cart.reduce((count, item) => count + item.quantity, 0);
         cartCountElement.textContent = itemCount;
 
-        if (itemCount > 0) {
-            cartCountElement.style.display = 'flex';
+        // Always show the cart count element
+        cartCountElement.style.display = 'flex';
 
-            // Add animation if requested
-            if (animate && cartLinkElement) {
-                // Remove any existing animation classes
-                cartLinkElement.classList.remove('cart-bounce', 'cart-pulse');
+        // Add animation if requested and there are items in the cart
+        if (itemCount > 0 && animate && cartLinkElement) {
+            // Remove any existing animation classes
+            cartLinkElement.classList.remove('cart-bounce', 'cart-pulse');
 
-                // Force a reflow to restart the animation
-                void cartLinkElement.offsetWidth;
+            // Force a reflow to restart the animation
+            void cartLinkElement.offsetWidth;
 
-                // Add the bounce animation class
-                cartLinkElement.classList.add('cart-bounce');
+            // Add the bounce animation class
+            cartLinkElement.classList.add('cart-bounce');
 
-                // Add pulse animation to the count
+            // Add pulse animation to the count
+            cartCountElement.classList.remove('cart-pulse');
+            void cartCountElement.offsetWidth;
+            cartCountElement.classList.add('cart-pulse');
+
+            // Remove the animation classes after they complete
+            setTimeout(() => {
+                cartLinkElement.classList.remove('cart-bounce');
                 cartCountElement.classList.remove('cart-pulse');
-                void cartCountElement.offsetWidth;
-                cartCountElement.classList.add('cart-pulse');
-
-                // Remove the animation classes after they complete
-                setTimeout(() => {
-                    cartLinkElement.classList.remove('cart-bounce');
-                    cartCountElement.classList.remove('cart-pulse');
-                }, 1000);
-            }
-        } else {
-            cartCountElement.style.display = 'none';
+            }, 1000);
         }
     }
 }
@@ -235,7 +234,16 @@ function showNotification(message) {
 
 // Initialize cart
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Cart.js: Initializing cart');
+
+    // Always initialize the cart
     loadCart();
+
+    // Force update the cart count
+    updateCartCount();
+
+    // Log the cart state
+    console.log('Cart initialized with', window.cart.length, 'items');
 
     // Set up cart toggle if it exists
     const cartToggle = document.getElementById('cartToggle');

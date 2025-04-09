@@ -106,6 +106,29 @@
 
 @section Scripts {
     <script>
-        // Any specific scripts for this page
+        // Image preview functionality
+        document.getElementById('image-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const preview = document.getElementById('image-preview');
+                    preview.innerHTML = `<img src="${event.target.result}" style="max-width: 200px; max-height: 200px;" />`;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form submission handling
+        document.querySelector('form').addEventListener('submit', function(e) {
+            console.log('Form submission started');
+            const submitBtn = document.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+
+            // Let the form submit normally
+            return true;
+        });
     </script>
 }

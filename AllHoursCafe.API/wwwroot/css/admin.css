@@ -1,39 +1,121 @@
 /* Admin Dashboard Styles */
+
 :root {
-    --primary-color: #4a6741;
-    --secondary-color: #8c7851;
-    --accent-color: #d9b26f;
-    --light-color: #f5f5f5;
-    --dark-color: #333;
+    --primary-color: #4a3c31;
+    --secondary-color: #8b7355;
+    --accent-color: #d4b996;
+    --text-color: #333;
+    --light-bg: #f5f5f5;
+    --white: #ffffff;
     --danger-color: #dc3545;
     --success-color: #28a745;
     --warning-color: #ffc107;
     --info-color: #17a2b8;
+    --transition-duration: 0.3s;
+    --heading-font: 'Gabriela', serif;
+    --body-font: 'Arial', sans-serif;
+    --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    --hover-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
+/* Apply fonts */
+body {
+    font-family: var(--body-font);
+    background-color: #f8f5f2;
+    color: var(--text-color);
+    padding-top: 0;
+}
+
+h1, h2, h3, h4, h5, h6, .admin-card-title {
+    font-family: var(--heading-font);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    color: var(--primary-color);
+}
+
+/* Logout button styling */
+.btn-link.nav-link {
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition-duration) ease;
+}
+
+.btn-link.nav-link:hover {
+    color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+/* Main container */
 .admin-container {
-    padding: 20px;
+    padding: 40px;
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
 }
 
+/* Header styling */
 .admin-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
+    margin-bottom: 35px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--accent-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color), var(--primary-color));
+    animation: gradient-shift 8s ease infinite;
+    background-size: 200% 200%;
 }
 
 .admin-title {
-    font-size: 24px;
+    font-size: 32px;
     color: var(--primary-color);
+    position: relative;
+    padding-left: 15px;
+    animation: fadeInDown 0.8s ease-out;
+}
+
+.admin-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10%;
+    height: 80%;
+    width: 5px;
+    background-color: var(--accent-color);
+    border-radius: 3px;
+}
+
+/* Admin welcome section */
+.admin-welcome {
+    margin-top: 10px;
+    animation: fadeIn 1s ease-out;
+}
+
+.admin-welcome p {
+    color: var(--secondary-color);
+    font-size: 16px;
+    margin: 0;
 }
 
 .admin-actions {
     display: flex;
-    gap: 10px;
+    gap: 15px;
+    animation: fadeInRight 0.8s ease-out;
 }
 
 /* Admin Tables */
@@ -196,34 +278,80 @@
 /* Admin Cards */
 .admin-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+    margin-top: 20px;
 }
 
 .admin-card {
     background-color: white;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-duration) ease;
+    animation: fadeInUp 0.8s ease-out;
+    animation-fill-mode: both;
+}
+
+.admin-card:nth-child(1) { animation-delay: 0.1s; }
+.admin-card:nth-child(2) { animation-delay: 0.2s; }
+.admin-card:nth-child(3) { animation-delay: 0.3s; }
+.admin-card:nth-child(4) { animation-delay: 0.4s; }
+
+.admin-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
 }
 
 .admin-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-10px);
+    box-shadow: var(--hover-shadow);
 }
 
-.admin-card-title {
-    font-size: 18px;
-    margin-bottom: 10px;
+.admin-card:hover .admin-card-value {
+    transform: scale(1.1);
     color: var(--primary-color);
 }
 
+.admin-card-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    position: relative;
+    display: inline-block;
+}
+
+.admin-card-title::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.admin-card:hover .admin-card-title::after {
+    width: 100%;
+}
+
 .admin-card-value {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+    margin-top: 10px;
+    transition: all var(--transition-duration) ease;
 }
 
 .admin-card-icon {
@@ -233,6 +361,194 @@
     position: absolute;
     top: 10px;
     right: 10px;
+}
+
+/* Summary sections */
+.reservation-summary,
+.message-summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.summary-icon {
+    font-size: 24px;
+    color: var(--primary-color);
+    margin-right: 15px;
+}
+
+.summary-text {
+    text-align: left;
+}
+
+.summary-text strong {
+    color: var(--primary-color);
+}
+
+.empty-state {
+    padding: 20px 0;
+}
+
+.empty-icon {
+    font-size: 32px;
+    color: #ccc;
+    margin-bottom: 10px;
+}
+
+/* Admin Section */
+.admin-section {
+    margin-bottom: 50px;
+    margin-top: 40px;
+    animation: fadeIn 1s ease-out;
+}
+
+.admin-section h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
+    position: relative;
+    padding-left: 15px;
+    display: inline-block;
+}
+
+.admin-section h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10%;
+    height: 80%;
+    width: 5px;
+    background-color: var(--accent-color);
+    border-radius: 3px;
+}
+
+/* Cafe management card */
+.cafe-management-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    padding: 30px;
+    margin-bottom: 30px;
+    transition: all var(--transition-duration) ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.cafe-management-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--accent-color), var(--secondary-color), var(--primary-color));
+}
+
+.cafe-management-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow);
+}
+
+.cafe-management-content {
+    display: flex;
+    align-items: center;
+}
+
+.cafe-management-icon {
+    font-size: 48px;
+    color: var(--primary-color);
+    margin-right: 30px;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.cafe-management-text h3 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.cafe-management-text p {
+    color: #666;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+/* Badge Styling for Contact Messages */
+.badge {
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    text-align: center;
+    min-width: 80px;
+}
+
+.badge-primary {
+    background-color: #e67e22; /* Orange color for unread messages */
+    color: white;
+    box-shadow: 0 2px 5px rgba(230, 126, 34, 0.3);
+    animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 2px 5px rgba(230, 126, 34, 0.3);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(230, 126, 34, 0.4);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 2px 5px rgba(230, 126, 34, 0.3);
+    }
+}
+
+.badge-secondary {
+    background-color: #95a5a6; /* Gray color for read messages */
+    color: white;
+    box-shadow: 0 2px 5px rgba(149, 165, 166, 0.3);
+}
+
+/* User Status Badge Styling */
+.badge-success {
+    background-color: #27ae60; /* Green color for active status */
+    color: white;
+    box-shadow: 0 2px 5px rgba(39, 174, 96, 0.3);
+    font-weight: 600;
+}
+
+/* Add a subtle glow effect to active status */
+.badge-success:hover {
+    box-shadow: 0 0 10px rgba(39, 174, 96, 0.5);
+}
+
+.badge-danger {
+    background-color: #e74c3c; /* Red color for inactive status */
+    color: white;
+    box-shadow: 0 2px 5px rgba(231, 76, 60, 0.3);
+    font-weight: 600;
+}
+
+/* Add a subtle glow effect to inactive status */
+.badge-danger:hover {
+    box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+}
+
+/* User Management Table Styling */
+.table-striped > tbody > tr:nth-of-type(odd) > td > .badge {
+    /* Ensure badges are visible on striped rows */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Center align status column */
+.table th:nth-child(4),
+.table td:nth-child(4) {
+    text-align: center;
 }
 
 /* Admin Navigation */
@@ -258,6 +574,20 @@
 .admin-nav-item.active {
     background-color: var(--primary-color);
     color: white;
+}
+
+/* Contact Messages Styling */
+.unread-message {
+    background-color: rgba(230, 126, 34, 0.05);
+    font-weight: 500;
+}
+
+.unread-message:hover {
+    background-color: rgba(230, 126, 34, 0.1) !important;
+}
+
+.read-message {
+    background-color: transparent;
 }
 
 /* Alerts */
@@ -323,32 +653,95 @@
     display: block;
 }
 
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes width-pulse {
+    0% { width: 30%; }
+    50% { width: 70%; }
+    100% { width: 30%; }
+}
+
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .admin-cards {
         grid-template-columns: 1fr;
     }
-    
+
     .admin-header {
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .admin-actions {
-        margin-top: 10px;
+        margin-top: 15px;
+        width: 100%;
+        justify-content: space-between;
     }
-    
+
     .admin-table {
         display: block;
         overflow-x: auto;
     }
-    
+
     .admin-nav {
         flex-wrap: wrap;
     }
-    
+
     .admin-nav-item {
         flex: 1 0 50%;
         text-align: center;
+    }
+
+    .admin-title {
+        font-size: 28px;
+        margin-bottom: 10px;
+    }
+
+    .btn {
+        padding: 6px 15px;
+        font-size: 13px;
     }
 }

@@ -1,0 +1,141 @@
+@model AllHoursCafe.API.Models.Order
+@{
+    ViewData["Title"] = "Order Details";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-header">
+    <h1 class="admin-title">Order Details</h1>
+    <div class="admin-actions">
+        @if (ViewBag.UserId != null)
+        {
+            <a asp-action="UserDetails" asp-route-id="@ViewBag.UserId" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to User
+            </a>
+        }
+        else
+        {
+            <a asp-action="Orders" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Orders
+            </a>
+        }
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Order #@Model.Id</h5>
+        <div>
+            <span class="badge @(Model.OrderStatus == "Completed" ? "badge-success" : (Model.OrderStatus == "Cancelled" ? "badge-danger" : "badge-warning"))">
+                @Model.OrderStatus
+            </span>
+            <span class="badge @(Model.PaymentStatus == "Completed" ? "badge-success" : "badge-warning")">
+                Payment: @Model.PaymentStatus
+            </span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h6 class="font-weight-bold">Customer Information</h6>
+                <dl class="row">
+                    <dt class="col-sm-4">Name:</dt>
+                    <dd class="col-sm-8">@Model.CustomerName</dd>
+
+                    <dt class="col-sm-4">Email:</dt>
+                    <dd class="col-sm-8">@Model.CustomerEmail</dd>
+
+                    <dt class="col-sm-4">Phone:</dt>
+                    <dd class="col-sm-8">@Model.CustomerPhone</dd>
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <h6 class="font-weight-bold">Order Information</h6>
+                <dl class="row">
+                    <dt class="col-sm-4">Order Date:</dt>
+                    <dd class="col-sm-8">@Model.OrderDate.ToString("MMM dd, yyyy HH:mm")</dd>
+
+                    <dt class="col-sm-4">Order Type:</dt>
+                    <dd class="col-sm-8">@Model.OrderType</dd>
+
+                    @if (Model.DeliveryTime.HasValue)
+                    {
+                        <dt class="col-sm-4">Delivery Time:</dt>
+                        <dd class="col-sm-8">@Model.DeliveryTime.Value.ToString("MMM dd, yyyy HH:mm")</dd>
+                    }
+
+                    <dt class="col-sm-4">Payment Method:</dt>
+                    <dd class="col-sm-8">@(string.IsNullOrEmpty(Model.PaymentMethod) ? "Not specified" : Model.PaymentMethod)</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <h6 class="font-weight-bold">Delivery Address</h6>
+                <address>
+                    @Model.DeliveryAddress<br>
+                    @Model.City, @Model.State @Model.PostalCode
+                </address>
+
+                @if (!string.IsNullOrEmpty(Model.SpecialInstructions))
+                {
+                    <h6 class="font-weight-bold mt-3">Special Instructions</h6>
+                    <p>@Model.SpecialInstructions</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Order Items</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th class="text-right">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>₹@item.Price.ToString("F2")</td>
+                            <td>@item.Quantity</td>
+                            <td class="text-right">₹@item.Total.ToString("F2")</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-right"><strong>Subtotal:</strong></td>
+                        <td class="text-right">₹@Model.SubTotal.ToString("F2")</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="text-right"><strong>Tax:</strong></td>
+                        <td class="text-right">₹@Model.Tax.ToString("F2")</td>
+                    </tr>
+                    @if (Model.DeliveryFee > 0)
+                    {
+                        <tr>
+                            <td colspan="3" class="text-right"><strong>Delivery Fee:</strong></td>
+                            <td class="text-right">₹@Model.DeliveryFee.ToString("F2")</td>
+                        </tr>
+                    }
+                    <tr class="table-active">
+                        <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                        <td class="text-right"><strong>₹@Model.Total.ToString("F2")</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

@@ -97,6 +97,42 @@ namespace AllHoursCafe.API.Migrations
                         });
                 });
 
+            modelBuilder.Entity("AllHoursCafe.API.Models.Contact", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("varchar(2000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Contacts");
+                });
+
             modelBuilder.Entity("AllHoursCafe.API.Models.MenuItem", b =>
                 {
                     b.Property<int>("Id")
@@ -196,6 +232,10 @@ namespace AllHoursCafe.API.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("OrderType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PaymentDetails")
                         .IsRequired()
                         .HasColumnType("longtext");
 

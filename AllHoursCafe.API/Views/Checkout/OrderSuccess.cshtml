@@ -1,0 +1,124 @@
+@model AllHoursCafe.API.Models.Order
+
+@{
+    ViewData["Title"] = "Order Success";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-success">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0 text-center">
+                        <i class="fas fa-check-circle mr-2"></i> Order Confirmed!
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="success-icon mb-3">
+                            <i class="fas fa-check-circle text-success" style="font-size: 5rem;"></i>
+                        </div>
+                        <h4>Thank you for your order!</h4>
+                        <p class="lead">Your payment has been processed successfully.</p>
+
+                        <div class="alert alert-success mt-3">
+                            <strong>Success!</strong> Your order #@Model.Id has been confirmed and is being processed.
+                        </div>
+                    </div>
+
+                    <div class="order-details mt-4">
+                        <h5 class="border-bottom pb-2">Order Details</h5>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <p><strong>Order Number:</strong> #@Model.Id.ToString("D6")</p>
+                                <p><strong>Order Date:</strong> @Model.OrderDate.ToString("MMMM dd, yyyy h:mm tt")</p>
+                                <p><strong>Payment Method:</strong> @Model.PaymentMethod</p>
+                                <p><strong>Payment Status:</strong> @Model.PaymentStatus</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Name:</strong> @Model.CustomerName</p>
+                                <p><strong>Email:</strong> @Model.CustomerEmail</p>
+                                <p><strong>Phone:</strong> @Model.CustomerPhone</p>
+                                <p><strong>Order Type:</strong> @Model.OrderType</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-summary mt-4">
+                        <h5 class="border-bottom pb-2">Order Summary</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th class="text-center">Quantity</th>
+                                        <th class="text-right">Price</th>
+                                        <th class="text-right">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.OrderItems)
+                                    {
+                                        <tr>
+                                            <td>@item.Name</td>
+                                            <td class="text-center">@item.Quantity</td>
+                                            <td class="text-right">₹@item.Price.ToString("F2")</td>
+                                            <td class="text-right">₹@item.Total.ToString("F2")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" class="text-right"><strong>Subtotal:</strong></td>
+                                        <td class="text-right">₹@Model.SubTotal.ToString("F2")</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="text-right"><strong>Tax:</strong></td>
+                                        <td class="text-right">₹@Model.Tax.ToString("F2")</td>
+                                    </tr>
+                                    @if (Model.DeliveryFee > 0)
+                                    {
+                                        <tr>
+                                            <td colspan="3" class="text-right"><strong>Delivery Fee:</strong></td>
+                                            <td class="text-right">₹@Model.DeliveryFee.ToString("F2")</td>
+                                        </tr>
+                                    }
+                                    <tr class="bg-light">
+                                        <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                                        <td class="text-right"><strong>₹@Model.Total.ToString("F2")</strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a href="/" class="btn btn-primary">
+                            <i class="fas fa-home mr-2"></i> Return to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .success-icon {
+        animation-name: pulse;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+    }
+
+    @@keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+</style>

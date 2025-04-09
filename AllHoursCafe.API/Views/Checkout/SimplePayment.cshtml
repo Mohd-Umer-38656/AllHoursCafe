@@ -1,0 +1,56 @@
+@model AllHoursCafe.API.Controllers.PaymentViewModel
+
+@{
+    ViewData["Title"] = "Simple Payment";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Complete Your Payment</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Payment" asp-route-id="@Model.Order.Id" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                        <input type="hidden" name="Order.Id" value="@Model.Order.Id" />
+                        <input type="hidden" name="Order.CustomerName" value="@Model.Order.CustomerName" />
+                        <input type="hidden" name="Order.CustomerEmail" value="@Model.Order.CustomerEmail" />
+                        <input type="hidden" name="Order.CustomerPhone" value="@Model.Order.CustomerPhone" />
+                        
+                        <div class="form-group">
+                            <label>Payment Method</label>
+                            <select name="PaymentMethod" class="form-control">
+                                @foreach (var method in Model.PaymentMethods)
+                                {
+                                    <option value="@method">@method</option>
+                                }
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Order Total</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">₹</span>
+                                </div>
+                                <input type="text" class="form-control" value="@Model.Order.Total.ToString("F2")" readonly />
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle mr-2"></i> This is a simplified payment form for testing purposes.
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <a asp-action="Index" class="btn btn-secondary mr-2">Back to Checkout</a>
+                            <button type="submit" class="btn btn-primary">Complete Payment</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

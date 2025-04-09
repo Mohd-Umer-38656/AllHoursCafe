@@ -14,20 +14,137 @@
         <p>Manage your menu items</p>
         <a asp-action="MenuItems" class="btn btn-primary">View All</a>
     </div>
-    
+
     <div class="admin-card">
         <div class="admin-card-title">Categories</div>
         <div class="admin-card-value">@ViewBag.CategoriesCount</div>
         <p>Manage your menu categories</p>
         <a asp-action="Categories" class="btn btn-primary">View All</a>
     </div>
+
+    <div class="admin-card">
+        <div class="admin-card-title">Reservations</div>
+        <div class="admin-card-value">@ViewBag.ReservationsCount</div>
+        <p>Manage customer reservations</p>
+        <a asp-action="Reservations" class="btn btn-primary">View All</a>
+    </div>
+
+    <div class="admin-card">
+        <div class="admin-card-title">Contact Messages</div>
+        <div class="admin-card-value">@ViewBag.UnreadContactsCount</div>
+        <p>Unread contact messages</p>
+        <a asp-action="Contacts" class="btn btn-primary">View All</a>
+    </div>
 </div>
 
 <div class="admin-section">
     <h2>Quick Actions</h2>
-    <div class="admin-actions">
-        <a asp-action="CreateMenuItem" class="btn btn-success">Add New Menu Item</a>
-        <a asp-action="CreateCategory" class="btn btn-success">Add New Category</a>
+    <div class="quick-actions-container">
+        <div class="quick-action-card">
+            <div class="quick-action-icon">
+                <i class="fas fa-utensils"></i>
+            </div>
+            <div class="quick-action-content">
+                <h3>Menu Items</h3>
+                <p>Add new dishes to your menu</p>
+                <a asp-action="EnhancedCreateMenuItem" class="btn btn-success">Add New Menu Item <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="quick-action-card">
+            <div class="quick-action-icon">
+                <i class="fas fa-list"></i>
+            </div>
+            <div class="quick-action-content">
+                <h3>Categories</h3>
+                <p>Create new menu categories</p>
+                <a asp-action="CreateCategory" class="btn btn-success">Add New Category <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="quick-action-card">
+            <div class="quick-action-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="quick-action-content">
+                <h3>Users</h3>
+                <p>Manage user accounts and roles</p>
+                <a asp-action="Users" class="btn btn-info">Manage Users <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="admin-section">
+    <h2>Recent Activity</h2>
+    <div class="activity-container">
+        <div class="activity-card reservation-activity">
+            <div class="activity-header">
+                <div class="activity-title">
+                    <i class="fas fa-calendar-check"></i>
+                    <h3>Latest Reservations</h3>
+                </div>
+                <a asp-action="Reservations" class="view-all-link">View All</a>
+            </div>
+            <div class="activity-content">
+                <div class="activity-summary">
+                    <div class="activity-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="activity-details">
+                        <div class="activity-count">@ViewBag.ReservationsCount</div>
+                        <div class="activity-label">Total Reservations</div>
+                    </div>
+                </div>
+                @if (ViewBag.ReservationsCount > 0)
+                {
+                    <a asp-action="Reservations" class="activity-action">View all reservations <i class="fas fa-arrow-right"></i></a>
+                }
+                else
+                {
+                    <div class="empty-activity">
+                        <i class="fas fa-calendar-times"></i>
+                        <p>No reservations found</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="activity-card message-activity">
+            <div class="activity-header">
+                <div class="activity-title">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Recent Contact Messages</h3>
+                </div>
+                <a asp-action="Contacts" class="view-all-link">View All</a>
+            </div>
+            <div class="activity-content">
+                <div class="activity-summary">
+                    <div class="activity-icon">
+                        <i class="fas fa-envelope-open-text"></i>
+                        @if (ViewBag.UnreadContactsCount > 0)
+                        {
+                            <div class="notification-badge">@ViewBag.UnreadContactsCount</div>
+                        }
+                    </div>
+                    <div class="activity-details">
+                        <div class="activity-count">@ViewBag.UnreadContactsCount</div>
+                        <div class="activity-label">Unread Messages</div>
+                    </div>
+                </div>
+                @if (ViewBag.UnreadContactsCount > 0)
+                {
+                    <a asp-action="Contacts" class="activity-action">View all messages <i class="fas fa-arrow-right"></i></a>
+                }
+                else
+                {
+                    <div class="empty-activity">
+                        <i class="fas fa-envelope-open"></i>
+                        <p>No unread messages</p>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
 </div>
 

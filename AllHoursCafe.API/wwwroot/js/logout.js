@@ -1,11 +1,11 @@
 // Logout functionality with cache clearing
 document.addEventListener('DOMContentLoaded', function() {
-    // Get the logout form
+    // Get the logout forms
     const logoutForm = document.getElementById('logoutForm');
+    const adminLogoutForm = document.getElementById('adminLogoutForm');
 
-    if (logoutForm) {
-        // Add event listener to the logout form
-        logoutForm.addEventListener('submit', function(e) {
+    // Function to handle logout form submission
+    function handleLogoutSubmit(e) {
             e.preventDefault();
 
             // Clear all localStorage items
@@ -61,7 +61,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Even if there's an error, try to redirect to home
                 window.location.href = '/';
             });
-        });
+    }
+
+    // Add event listeners to the logout forms
+    if (logoutForm) {
+        logoutForm.addEventListener('submit', handleLogoutSubmit);
+    }
+
+    if (adminLogoutForm) {
+        adminLogoutForm.addEventListener('submit', handleLogoutSubmit);
     }
 });
 

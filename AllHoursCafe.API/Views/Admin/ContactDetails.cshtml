@@ -1,0 +1,67 @@
+@model AllHoursCafe.API.Models.Contact
+@{
+    ViewData["Title"] = "Contact Details";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-header">
+    <h1 class="admin-title">Contact Message Details</h1>
+    <div class="admin-actions">
+        <a asp-action="Contacts" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">@Model.Subject</h5>
+        <span class="badge @(Model.IsRead ? "badge-secondary" : "badge-primary")">
+            @(Model.IsRead ? "Read" : "Unread")
+        </span>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <strong>From:</strong> @Model.Name (@Model.Email)
+            </div>
+            <div class="col-md-6 text-md-right">
+                <strong>Date:</strong> @Model.CreatedAt.ToString("MMM dd, yyyy HH:mm")
+            </div>
+        </div>
+        <div class="message-content p-3 bg-light rounded">
+            <p>@Model.Message</p>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="d-flex justify-content-between">
+            <div>
+                <form asp-action="MarkAsRead" asp-route-id="@Model.Id" method="post" class="d-inline">
+                    @if (!Model.IsRead)
+                    {
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check"></i> Mark as Read
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-secondary">
+                            <i class="fas fa-undo"></i> Mark as Unread
+                        </button>
+                    }
+                </form>
+            </div>
+            <div>
+                <a href="mailto:@Model.Email" class="btn btn-primary">
+                    <i class="fas fa-reply"></i> Reply via Email
+                </a>
+                <form asp-action="DeleteContact" asp-route-id="@Model.Id" method="post" class="d-inline" 
+                      onsubmit="return confirm('Are you sure you want to delete this message?');">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

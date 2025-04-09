@@ -58,6 +58,9 @@ namespace AllHoursCafe.API.Controllers
             }
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+            _logger.LogInformation("Login attempt - User found: {UserFound}, Email: {Email}, Role: {Role}",
+                user != null, model.Email, user?.Role);
+
             if (user == null || !VerifyPassword(model.Password, user.PasswordHash))
             {
                 ModelState.AddModelError("", "Invalid email or password");
@@ -79,6 +82,9 @@ namespace AllHoursCafe.API.Controllers
             }
 
             // Create claims for the user
+            _logger.LogInformation("Creating claims for user - ID: {UserId}, Email: {Email}, Role: {Role}",
+                user.Id, user.Email, user.Role);
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -86,6 +92,9 @@ namespace AllHoursCafe.API.Controllers
                 new Claim(ClaimTypes.Name, user.FullName),
                 new Claim(ClaimTypes.Role, user.Role)
             };
+
+            _logger.LogInformation("Claims created - Role claim value: {RoleClaim}",
+                claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value);
 
             // Create identity and principal
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

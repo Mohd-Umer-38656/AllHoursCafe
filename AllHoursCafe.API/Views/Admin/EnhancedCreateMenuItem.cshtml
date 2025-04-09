@@ -1,0 +1,250 @@
+@{
+    ViewData["Title"] = "Add Menu Item";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-header">
+    <h1 class="admin-title">Add New Menu Item</h1>
+    <div class="admin-actions">
+        <a asp-controller="Admin" asp-action="MenuItems" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Menu Items
+        </a>
+    </div>
+</div>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle mr-2"></i> @ViewBag.ErrorMessage
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-controller="Admin" asp-action="SimpleCreateMenuItem" method="post" enctype="multipart/form-data" id="menuItemForm">
+            @Html.AntiForgeryToken()
+
+            <div class="row">
+                <!-- Left Column - Basic Information -->
+                <div class="col-md-8">
+                    <h5 class="border-bottom pb-2 mb-3">Basic Information</h5>
+
+                    <div class="form-group">
+                        <label for="Name">Name <span class="text-danger">*</span></label>
+                        <input type="text" id="Name" name="Name" class="form-control" required
+                               placeholder="Enter menu item name" />
+                        <small class="form-text text-muted">The name as it will appear on the menu</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Description">Description <span class="text-danger">*</span></label>
+                        <textarea id="Description" name="Description" class="form-control" rows="3" required
+                                  placeholder="Describe the menu item"></textarea>
+                        <small class="form-text text-muted">A detailed description of the menu item</small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Price">Price (₹) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">₹</span>
+                                    </div>
+                                    <input type="number" id="Price" name="Price" class="form-control"
+                                           step="0.01" min="0" required placeholder="0.00" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="CategoryId">Category <span class="text-danger">*</span></label>
+                                <select id="CategoryId" name="CategoryId" class="form-control" required>
+                                    <option value="">-- Select Category --</option>
+                                    @foreach (var category in ViewBag.Categories)
+                                    {
+                                        <option value="@category.Id">@category.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="SpicyLevel">Spicy Level <span class="text-danger">*</span></label>
+                                <select id="SpicyLevel" name="SpicyLevel" class="form-control" required>
+                                    <option value="None">None</option>
+                                    <option value="Mild">Mild</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Hot">Hot</option>
+                                    <option value="Extra Hot">Extra Hot</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="PrepTimeMinutes">Preparation Time (minutes)</label>
+                                <input type="number" id="PrepTimeMinutes" name="PrepTimeMinutes"
+                                       class="form-control" min="0" placeholder="15" />
+                                <small class="form-text text-muted">Approximate time to prepare</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Image and Options -->
+                <div class="col-md-4">
+                    <h5 class="border-bottom pb-2 mb-3">Image</h5>
+
+                    <div class="form-group">
+                        <div class="custom-file mb-3">
+                            <input type="file" class="custom-file-input" id="file" name="file" accept="image/*">
+                            <label class="custom-file-label" for="file">Choose image...</label>
+                        </div>
+
+                        <div id="image-preview" class="text-center p-3 border rounded mb-3" style="display: none;">
+                            <img src="" alt="Preview" class="img-fluid" style="max-height: 200px;">
+                        </div>
+
+                        <div id="default-image" class="text-center p-3 border rounded mb-3">
+                            <img src="/images/placeholder.jpg" alt="Default" class="img-fluid" style="max-height: 200px;">
+                            <div class="mt-2 text-muted small">Default image (if none uploaded)</div>
+                        </div>
+
+                        <small class="form-text text-muted">Recommended size: 500x500 pixels. Max file size: 2MB.</small>
+                    </div>
+
+                    <h5 class="border-bottom pb-2 mb-3 mt-4">Dietary Options</h5>
+
+                    <div class="form-group">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="IsVegetarian" name="IsVegetarian">
+                            <label class="custom-control-label" for="IsVegetarian">Vegetarian</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="IsVegan" name="IsVegan">
+                            <label class="custom-control-label" for="IsVegan">Vegan</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="IsGlutenFree" name="IsGlutenFree">
+                            <label class="custom-control-label" for="IsGlutenFree">Gluten Free</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="IsActive" name="IsActive" checked>
+                            <label class="custom-control-label" for="IsActive">Active</label>
+                        </div>
+                        <small class="form-text text-muted">Inactive items won't be displayed on the menu</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Calories">Calories</label>
+                        <input type="number" id="Calories" name="Calories" class="form-control"
+                               step="0.01" min="0" placeholder="Optional" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden fields for required properties -->
+            <input type="hidden" name="ImageUrl" value="/images/placeholder.jpg" id="ImageUrlField" />
+            <input type="hidden" name="IsActive" value="true" />
+            <input type="hidden" name="IsVegetarian" value="false" id="IsVegetarianField" />
+            <input type="hidden" name="IsVegan" value="false" id="IsVeganField" />
+            <input type="hidden" name="IsGlutenFree" value="false" id="IsGlutenFreeField" />
+
+            <hr class="my-4">
+
+            <div class="form-actions text-center">
+                <button type="submit" class="btn btn-primary btn-lg px-5" id="submitBtn">
+                    <i class="fas fa-save mr-2"></i> Save Menu Item
+                </button>
+                <a asp-controller="Admin" asp-action="MenuItems" class="btn btn-secondary ml-2">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function() {
+            // File input handling
+            $('.custom-file-input').on('change', function() {
+                var fileName = $(this).val().split('\\').pop();
+                $(this).next('.custom-file-label').html(fileName || 'Choose image...');
+
+                // Image preview
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#default-image').hide();
+                        $('#image-preview').show();
+                        $('#image-preview img').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+
+            // Vegetarian/Vegan logic
+            $('#IsVegan').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#IsVegetarian').prop('checked', true);
+                    $('#IsVeganField').val('true');
+                    $('#IsVegetarianField').val('true');
+                } else {
+                    $('#IsVeganField').val('false');
+                }
+            });
+
+            $('#IsVegetarian').change(function() {
+                $('#IsVegetarianField').val($(this).is(':checked') ? 'true' : 'false');
+            });
+
+            $('#IsGlutenFree').change(function() {
+                $('#IsGlutenFreeField').val($(this).is(':checked') ? 'true' : 'false');
+            });
+
+            // Form submission - validate and disable button to prevent double submission
+            $('#menuItemForm').submit(function(e) {
+                // Basic validation
+                var name = $('#Name').val();
+                var price = $('#Price').val();
+                var categoryId = $('#CategoryId').val();
+                var description = $('#Description').val();
+
+                if (!name || !price || !categoryId || !description) {
+                    e.preventDefault();
+                    alert('Please fill in all required fields (Name, Price, Category, and Description)');
+                    return false;
+                }
+
+                // Log form data for debugging
+                console.log('Submitting form with:', {
+                    name: name,
+                    price: price,
+                    categoryId: categoryId,
+                    description: description,
+                    isVegetarian: $('#IsVegetarianField').val(),
+                    isVegan: $('#IsVeganField').val(),
+                    isGlutenFree: $('#IsGlutenFreeField').val()
+                });
+
+                // Disable button to prevent double submission
+                $('#submitBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
+            });
+        });
+    </script>
+}

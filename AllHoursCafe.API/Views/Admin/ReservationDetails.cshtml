@@ -1,0 +1,88 @@
+@model AllHoursCafe.API.Models.Reservation
+@{
+    ViewData["Title"] = "Reservation Details";
+    Layout = "_AdminLayout";
+
+    var reservationDateTime = Model.ReservationDate.Date.Add(Model.ReservationTime.TimeOfDay);
+    var isPast = reservationDateTime < DateTime.Now;
+}
+
+<div class="admin-header">
+    <h1 class="admin-title">Reservation Details</h1>
+    <div class="admin-actions">
+        <a asp-action="Reservations" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Reservation #@Model.Id</h5>
+        <span class="badge @(isPast ? "badge-secondary" : "badge-primary")">
+            @(isPast ? "Past" : "Upcoming")
+        </span>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h6 class="font-weight-bold">Customer Information</h6>
+                <dl class="row">
+                    <dt class="col-sm-4">Name:</dt>
+                    <dd class="col-sm-8">@Model.Name</dd>
+
+                    <dt class="col-sm-4">Email:</dt>
+                    <dd class="col-sm-8">@Model.Email</dd>
+
+                    <dt class="col-sm-4">Phone:</dt>
+                    <dd class="col-sm-8">@Model.PhoneNumber</dd>
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <h6 class="font-weight-bold">Reservation Details</h6>
+                <dl class="row">
+                    <dt class="col-sm-4">Date:</dt>
+                    <dd class="col-sm-8">@Model.ReservationDate.ToString("dddd, MMMM d, yyyy")</dd>
+
+                    <dt class="col-sm-4">Time:</dt>
+                    <dd class="col-sm-8">@Model.ReservationTime.ToString("h:mm tt")</dd>
+
+                    <dt class="col-sm-4">Party Size:</dt>
+                    <dd class="col-sm-8">@Model.NumberOfGuests people</dd>
+
+                    <dt class="col-sm-4">Created:</dt>
+                    <dd class="col-sm-8">@Model.CreatedAt.ToString("MMM dd, yyyy HH:mm")</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <h6 class="font-weight-bold">Special Requests</h6>
+                <div class="p-3 bg-light rounded">
+                    @if (!string.IsNullOrEmpty(Model.SpecialRequests))
+                    {
+                        <p>@Model.SpecialRequests</p>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No special requests</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="d-flex justify-content-between">
+            <a href="mailto:@Model.Email" class="btn btn-primary">
+                <i class="fas fa-envelope"></i> Contact Customer
+            </a>
+            <form asp-action="DeleteReservation" asp-route-id="@Model.Id" method="post"
+                  onsubmit="return confirm('Are you sure you want to delete this reservation?');">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Delete Reservation
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

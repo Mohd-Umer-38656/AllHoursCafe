@@ -1,0 +1,105 @@
+@model AllHoursCafe.API.Models.User
+@{
+    ViewData["Title"] = "Update Role";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-header">
+    <h1 class="admin-title">Update User Role</h1>
+    <div class="admin-actions">
+        <a asp-action="Users" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Update Role for: @Model.FullName</h5>
+    </div>
+    <div class="card-body">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="close" id="closeSuccessAlert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <script>
+                // Auto-dismiss the success message after 5 seconds
+                setTimeout(function() {
+                    document.getElementById('successAlert').style.display = 'none';
+                }, 5000);
+
+                // Manual close button handler
+                document.getElementById('closeSuccessAlert').addEventListener('click', function() {
+                    document.getElementById('successAlert').style.display = 'none';
+                });
+            </script>
+        }
+
+        <form asp-action="UpdateRole" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+
+            <div class="form-group">
+                <label for="role" class="control-label">Current Role</label>
+                <div class="alert alert-info">
+                    <strong>@Model.Role</strong>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="newRole" class="control-label">New Role</label>
+                <select name="newRole" id="newRole" class="form-control form-control-lg" style="background-color: #f8f9fa; font-weight: bold;">
+                    @if (Model.Role == "User")
+                    {
+                        <option value="User" selected>User</option>
+                        <option value="Admin">Admin</option>
+                    }
+                    else
+                    {
+                        <option value="User">User</option>
+                        <option value="Admin" selected>Admin</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <div class="card border-primary mb-3">
+                    <div class="card-header bg-primary text-white">Force Logout Option</div>
+                    <div class="card-body">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" name="forceLogout" id="forceLogout" checked>
+                            <label class="custom-control-label" for="forceLogout"><strong>Force user to log out</strong></label>
+                        </div>
+                        <small class="form-text text-muted mt-2">When checked, the user will be forced to log out and will need to log in again to get their new role. This is strongly recommended when changing roles.</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-save"></i> Update Role
+                </button>
+                <a asp-action="Users" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function() {
+            // Alert close button handler (as a backup to the inline script)
+            $('#closeSuccessAlert').on('click', function() {
+                $('#successAlert').fadeOut('slow');
+            });
+        });
+    </script>
+}

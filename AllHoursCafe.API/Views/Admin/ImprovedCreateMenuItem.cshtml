@@ -1,0 +1,205 @@
+@model AllHoursCafe.API.Models.MenuItem
+@{
+    ViewData["Title"] = "Add Menu Item";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-header">
+    <h1 class="admin-title">Add New Menu Item</h1>
+    <div class="admin-actions">
+        <a asp-action="MenuItems" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Menu Items
+        </a>
+    </div>
+</div>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle mr-2"></i> @ViewBag.ErrorMessage
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<div class="card">
+    <div class="card-body">
+        <form action="/Admin/ImprovedCreateMenuItem" method="post" enctype="multipart/form-data" id="menuItemForm">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label">Name <span class="text-danger">*</span></label>
+                        <input asp-for="Name" class="form-control" required />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label">Description <span class="text-danger">*</span></label>
+                        <textarea asp-for="Description" class="form-control" rows="3" required></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                        <small class="form-text text-muted">Provide a detailed description of the menu item.</small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Price" class="control-label">Price (₹) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">₹</span>
+                                    </div>
+                                    <input asp-for="Price" class="form-control" type="number" step="0.01" min="0" required />
+                                </div>
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="CategoryId" class="control-label">Category <span class="text-danger">*</span></label>
+                                <select asp-for="CategoryId" class="form-control" required>
+                                    <option value="">-- Select Category --</option>
+                                    @foreach (var category in ViewBag.Categories)
+                                    {
+                                        <option value="@category.Id">@category.Name</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="CategoryId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="file" class="control-label">Image</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="file" name="file" accept="image/*">
+                            <label class="custom-file-label" for="file">Choose file...</label>
+                        </div>
+                        <div id="image-preview" class="mt-3 text-center" style="display: none;">
+                            <img src="" alt="Preview" class="img-thumbnail" style="max-height: 200px;">
+                        </div>
+                        <div class="mt-2">
+                            <small class="form-text text-muted">Recommended size: 500x500 pixels. Max file size: 2MB.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Details</h5>
+                    <div class="form-group">
+                        <label asp-for="SpicyLevel" class="control-label">Spicy Level <span class="text-danger">*</span></label>
+                        <select asp-for="SpicyLevel" class="form-control" required>
+                            <option value="None">None</option>
+                            <option value="Mild">Mild</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Hot">Hot</option>
+                            <option value="Extra Hot">Extra Hot</option>
+                        </select>
+                        <span asp-validation-for="SpicyLevel" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="PrepTimeMinutes" class="control-label">Preparation Time (minutes)</label>
+                        <input asp-for="PrepTimeMinutes" class="form-control" type="number" min="0" />
+                        <span asp-validation-for="PrepTimeMinutes" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Calories" class="control-label">Calories</label>
+                        <input asp-for="Calories" class="form-control" type="number" step="0.01" min="0" />
+                        <span asp-validation-for="Calories" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <h5>Dietary Information</h5>
+                    <div class="form-group">
+                        <div class="custom-control custom-switch">
+                            <input asp-for="IsVegetarian" class="custom-control-input" id="isVegetarian" />
+                            <label class="custom-control-label" for="isVegetarian">Vegetarian</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="custom-control custom-switch">
+                            <input asp-for="IsVegan" class="custom-control-input" id="isVegan" />
+                            <label class="custom-control-label" for="isVegan">Vegan</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="custom-control custom-switch">
+                            <input asp-for="IsGlutenFree" class="custom-control-input" id="isGlutenFree" />
+                            <label class="custom-control-label" for="isGlutenFree">Gluten Free</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="custom-control custom-switch">
+                            <input asp-for="IsActive" class="custom-control-input" id="isActive" checked />
+                            <label class="custom-control-label" for="isActive">Active</label>
+                        </div>
+                        <small class="form-text text-muted">Inactive items won't be displayed on the menu.</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions mt-4">
+                <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                    <i class="fas fa-save mr-2"></i> Save Menu Item
+                </button>
+                <a asp-action="MenuItems" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // File input handling
+            $('.custom-file-input').on('change', function() {
+                var fileName = $(this).val().split('\\').pop();
+                $(this).next('.custom-file-label').html(fileName || 'Choose file...');
+
+                // Image preview
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#image-preview').show();
+                        $('#image-preview img').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+
+            // Vegetarian/Vegan logic
+            $('#isVegan').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#isVegetarian').prop('checked', true);
+                }
+            });
+
+            // Form submission
+            $('#submitBtn').click(function(e) {
+                e.preventDefault();
+                console.log('Submit button clicked');
+                $(this).prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i> Saving...');
+
+                // Force form submission after a short delay
+                setTimeout(function() {
+                    $('#menuItemForm').submit();
+                }, 100);
+            });
+        });
+    </script>
+}

@@ -13,7 +13,7 @@
 
         <div class="checkout-content">
             <div class="checkout-form-container">
-                <form asp-action="Index" method="post">
+                <form asp-controller="Checkout" asp-action="Index" method="post" id="checkoutForm">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="form-section">
@@ -106,6 +106,12 @@
                     <div class="form-actions">
                         <a asp-controller="Menu" asp-action="Index" class="btn-secondary">Back to Menu</a>
                         <input type="submit" class="btn-primary" id="proceedToPaymentBtn" value="Proceed to Payment" />
+                        <div class="mt-3">
+                            <small class="text-muted">If you're having trouble proceeding to payment, please make sure all required fields are filled out.</small>
+                            <div id="directPaymentLink" style="display: none; margin-top: 10px;">
+                                <a href="#" class="btn btn-link">Click here if the button doesn't work</a>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -213,6 +219,55 @@
             });
 
             // Form is now working correctly
+
+            // Add form submission handler
+            $('#checkoutForm').on('submit', function(e) {
+                console.log('Form submitted');
+
+                // Check if form is valid
+                if (!$(this).valid()) {
+                    console.log('Form validation failed');
+                    e.preventDefault();
+                    return false;
+                }
+
+                console.log('Form validation passed, submitting...');
+
+                // Show loading indicator
+                $('#proceedToPaymentBtn').prop('disabled', true).val('Processing...');
+
+                // Let the form submit normally
+                return true;
+            });
+
+            $('#proceedToPaymentBtn').on('click', function() {
+                console.log('Proceed to Payment button clicked');
+
+                // Show direct link after 5 seconds in case the form submission gets stuck
+                setTimeout(function() {
+                    $('#directPaymentLink').show();
+                    $('#directPaymentLink a').attr('href', '/Checkout/Payment/' + $('#CurrentOrderId').val());
+                }, 5000);
+            });
+
+            // Add a hidden field to store the current order ID if available
+            if ($('#checkoutForm').length > 0) {
+                $('<input>').attr({
+                    type: 'hidden',
+                    id: 'CurrentOrderId',
+                    name: 'CurrentOrderId',
+                    value: '@Context.Session.GetInt32("CurrentOrderId")'
+                }).appendTo('#checkoutForm');
+            }
+
+            // Check for redirect from TempData
+            @if (TempData["RedirectToPayment"] != null)
+            {
+                <text>
+                console.log('Redirecting to payment page...');
+                window.location.href = '@TempData["RedirectToPayment"]';
+                </text>
+            }
         });
     </script>
 }
