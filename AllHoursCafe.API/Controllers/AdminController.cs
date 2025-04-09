@@ -349,8 +349,9 @@ namespace AllHoursCafe.API.Controllers
                         var uniqueFileName = Guid.NewGuid().ToString() + "_" + fileName;
 
                         // Get category name for folder structure
-                        var category = await _context.Categories.FindAsync(menuItem.CategoryId);
-                        var categoryName = category?.Name.ToLower() ?? "other";
+                        int categoryId = menuItem != null && menuItem.CategoryId > 0 ? menuItem.CategoryId : 1; // Default to category ID 1 if invalid
+                        var category = await _context.Categories.FindAsync(categoryId);
+                        var categoryName = category?.Name?.ToLower() ?? "other";
 
                         // Create directory if it doesn't exist
                         var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "Items", categoryName);
@@ -368,37 +369,46 @@ namespace AllHoursCafe.API.Controllers
                         }
 
                         // Update the ImageUrl property
-                        menuItem.ImageUrl = $"/images/Items/{categoryName}/{uniqueFileName}?v={DateTime.Now.Ticks}";
+                        if (menuItem != null)
+                        {
+                            menuItem.ImageUrl = $"/images/Items/{categoryName}/{uniqueFileName}?v={DateTime.Now.Ticks}";
+                        }
                     }
                 }
 
                 // Ensure required fields have values
-                if (string.IsNullOrEmpty(menuItem.Name))
+                if (menuItem != null)
                 {
-                    menuItem.Name = "New Menu Item";
+                    if (menuItem.Name == null || string.IsNullOrEmpty(menuItem.Name))
+                    {
+                        menuItem.Name = "New Menu Item";
+                    }
                 }
 
-                if (string.IsNullOrEmpty(menuItem.Description))
+                if (menuItem != null && string.IsNullOrEmpty(menuItem.Description))
                 {
                     menuItem.Description = "Description pending...";
                 }
 
                 // Handle image URL
-                if (string.IsNullOrEmpty(menuItem.ImageUrl))
+                if (menuItem != null)
                 {
-                    menuItem.ImageUrl = "/images/placeholder.jpg";
+                    if (string.IsNullOrEmpty(menuItem.ImageUrl))
+                    {
+                        menuItem.ImageUrl = "/images/placeholder.jpg";
+                    }
                 }
-                else if (!menuItem.ImageUrl.StartsWith("/images/"))
+                else if (menuItem != null && menuItem.ImageUrl != null && !menuItem.ImageUrl.StartsWith("/images/"))
                 {
                     // If the image URL doesn't start with /images/, it might be just a filename
                     // Get category name for folder structure
                     var category = await _context.Categories.FindAsync(menuItem.CategoryId);
-                    var categoryName = category?.Name.ToLower() ?? "other";
+                    var categoryName = category?.Name?.ToLower() ?? "other";
                     menuItem.ImageUrl = $"/images/Items/{categoryName}/{menuItem.ImageUrl}";
                 }
 
                 // Set default values for nullable fields if needed
-                if (menuItem.CategoryId <= 0)
+                if (menuItem != null && menuItem.CategoryId <= 0)
                 {
                     // Get the first category or create a default one
                     var firstCategory = await _context.Categories.FirstOrDefaultAsync();
@@ -422,10 +432,21 @@ namespace AllHoursCafe.API.Controllers
                     }
                 }
 
-                _context.Add(menuItem);
-                await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Menu item created successfully.";
-                return RedirectToAction(nameof(MenuItems));
+                if (menuItem != null)
+                {
+                    _context.Add(menuItem);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Menu item created successfully.";
+                    return RedirectToAction(nameof(MenuItems));
+                }
+                else
+                {
+                    // Handle the case where menuItem is null
+                    _logger.LogError("Cannot create menu item: menuItem is null");
+                    ViewBag.ErrorMessage = "Unable to create menu item. Please try again.";
+                    ViewBag.Categories = await _context.Categories.ToListAsync();
+                    return View("EnhancedCreateMenuItem", new MenuItem());
+                }
             }
             catch (Exception ex)
             {
@@ -507,7 +528,7 @@ namespace AllHoursCafe.API.Controllers
                     }
 
                     // Initialize MenuItems collection to avoid null reference
-                    category.MenuItems = new List<MenuItem>();
+                    category.MenuItems = [];
 
                     _context.Add(category);
                     await _context.SaveChangesAsync();
