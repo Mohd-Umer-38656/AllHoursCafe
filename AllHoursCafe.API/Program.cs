@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Pomelo.EntityFrameworkCore.MySql;
+using AllHoursCafe.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -135,6 +136,9 @@ builder.Services.AddSwaggerGen(c =>
 // Register DbSeeder and UpdateImageUrls
 builder.Services.AddScoped<DbSeeder>();
 builder.Services.AddScoped<UpdateImageUrls>();
+
+// Register Email Service
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 var app = builder.Build();
 

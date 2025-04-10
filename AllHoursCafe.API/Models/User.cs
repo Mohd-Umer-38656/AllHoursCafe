@@ -42,5 +42,10 @@ namespace AllHoursCafe.API.Models
 
         [StringLength(20)]
         public string Role { get; set; } = "User"; // Default role is User
+
+        // Password reset fields
+        public string? PasswordResetToken { get; set; }
+
+        public DateTime? PasswordResetTokenExpiry { get; set; }
     }
 }

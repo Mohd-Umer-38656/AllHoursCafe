@@ -90,6 +90,23 @@
     cursor: pointer;
 }
 
+.auth-form .forgot-password {
+    text-align: right;
+    margin-top: 0.5rem;
+}
+
+.auth-form .forgot-password a {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.auth-form .forgot-password a:hover {
+    color: #7d5544;
+    text-decoration: underline;
+}
+
 .auth-form button[type="submit"] {
     width: 100%;
     padding: 0.9rem;
